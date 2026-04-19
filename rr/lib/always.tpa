@@ -2,6 +2,8 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 
   OUTER_SET rr_always = 1
 
+  OUTER_SET bg2_chapter = 0
+  
   INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
   INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
   INCLUDE ~rr/lib/rr#sp2in.tph~                                       // Include my custom "Spell to Innate" function
@@ -9,6 +11,10 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
   INCLUDE "rr/lib/lib.tpa"
    
   ACTION_IF ENGINE_IS ~bgee bg2ee~ BEGIN
+  
+    ACTION_IF GAME_IS ~eet~ BEGIN
+      OUTER_SET bg2_chapter = 12
+    END
   
     ACTION_DEFINE_ARRAY charsetsReloadArray BEGIN game END
     ACTION_DEFINE_ARRAY charsetsNoConvertArray BEGIN setup tobex END
@@ -25,11 +31,19 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
       noconvert_array = charsetsNoConvertArray
     END
     
+    LOAD_TRA ~rr/tra/ee/%LANGUAGE%/game.tra~ // overrides mainline game.tra strings
+    
   END ELSE BEGIN
   
     // Old engine, just define tra_loc
     OUTER_SPRINT tra_loc "rr/tra"
     
+  END
+  
+  OUTER_FOR (i=1; i<=10; i=i+1) BEGIN
+    OUTER_SET bg2_chapter = bg2_chapter + 1
+    OUTER_SPRINT name_source ~bg2_chapter_%i%~
+    OUTER_SET EVAL ~%name_source%~ = bg2_chapter
   END
 
 END 

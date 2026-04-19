@@ -27,6 +27,9 @@ LANGUAGE ~Japanese~ ~JAPANESE~ ~rr/tra/english/game.tra~ ~rr/tra/english/setup.t
 LANGUAGE ~Polski~ ~polish~
 ~rr/tra/english/game.tra~ ~rr/tra/english/setup.tra~
 ~rr/tra/polish/game.tra~ ~rr/tra/polish/setup-%WEIDU_OS%.tra~
+LANGUAGE ~Chinese~ ~Schinese~ 
+~rr/tra/english/game.tra~ ~rr/tra/english/setup.tra~ 
+~rr/tra/Schinese/game.tra~ ~rr/tra/Schinese/setup-%WEIDU_OS%.tra~
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -3764,7 +3767,7 @@ COMPILE ~RR/RR_CYRIC/COMPILE/RR#BODK.BAF~                                    // 
 COPY_EXISTING ~BALDUR.BCS~ override                                        // delay Malchor Harpell's appearance until the CoC encounter is over, also delay quests etc
   DECOMPILE_AND_PATCH BEGIN
     REPLACE_TEXTUALLY EXACT_MATCH ~!Exists("c6harp")~ ~!Exists("c6harp") !AreaCheck("RR#001") !AreaCheck("AR0800")~
-    REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~\(^ +!Global("Chapter","GLOBAL",4)[ %LNL%]+!Global("Chapter","GLOBAL",5)[ %LNL%]+!Global("Chapter","GLOBAL",7)\)~ ~\1 !AreaCheck("RR#001")~
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~\(^ +!Global("Chapter","GLOBAL",%bg2_chapter_4%)[ %LNL%]+!Global("Chapter","GLOBAL",%bg2_chapter_5%)[ %LNL%]+!Global("Chapter","GLOBAL",%bg2_chapter_7%)\)~ ~\1 !AreaCheck("RR#001")~
   END
 UNLESS ~16510 0 1 0 0 "RR#001" "" OB~
 BUT_ONLY
@@ -3783,7 +3786,7 @@ COPY_EXISTING nalia.bcs   override
               minsc.bcs   override
               yoshimo.bcs override
   DECOMPILE_AND_PATCH BEGIN
-    REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~^\( +!Global("Chapter","GLOBAL",4)[ %LNL%]+!Global("Chapter","GLOBAL",5)[ %LNL%]+!Global("Chapter","GLOBAL",7)\)~ ~\1 !AreaCheck("RR#001")~
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~^\( +!Global("Chapter","GLOBAL",%bg2_chapter_4%)[ %LNL%]+!Global("Chapter","GLOBAL",%bg2_chapter_5%)[ %LNL%]+!Global("Chapter","GLOBAL",%bg2_chapter_7%)\)~ ~\1 !AreaCheck("RR#001")~
   END
 UNLESS ~16510 0 1 0 0 "RR#001" "" OB~
 BUT_ONLY
