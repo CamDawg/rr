@@ -302,7 +302,7 @@ END
 // ToBEx
 ACTION_IF FILE_EXISTS bgmain.exe BEGIN
   OUTER_SPRINT TOBEX_MOD_DIRECTORY "./rr/lib"
-  LOAD_TRA "rr/tra/english/tobex.tra" "rr/tra/%LANGUAGE%/tobex.tra"
+  LOAD_TRA "%tra_loc%/english/tobex.tra" "%tra_loc%/%LANGUAGE%/tobex.tra"
   ACTION_INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx.tpa"
 
   COPY "tobex_ini/tobextweak.ini" "tobex_ini/tobextweak.ini"

@@ -5,31 +5,12 @@
  *************************************************************************/
 
 
-BACKUP ~rr/backup~
-AUTHOR "Wisp, www.shsforums.net"
+BACKUP ~weidu_external/backup/rr~
+SUPPORT "Wisp, www.shsforums.net"
 VERSION ~v4.92~
 
 ALWAYS
-  INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
-  INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
-  INCLUDE ~rr/lib/rr#sp2in.tph~                                       // Include my custom "Spell to Innate" function
-  INCLUDE ~rr/lib/fl#bg1pal.tpa~                                      // BG1 Platform-Abstraction Library
-  INCLUDE "rr/lib/lib.tpa"
-
-  ACTION_DEFINE_ARRAY fl#tra BEGIN game END
-
-  LAF HANDLE_CHARSETS
-    INT_VAR
-      infer_charsets = 1
-      infer_charset = 1
-    STR_VAR
-      tra_path = "rr/tra"
-      convert_array = fl#tra
-      reload_array = fl#tra
-  END
-  ACTION_IF ENGINE_IS ~bgee bg2ee iwdee~ BEGIN
-    LOAD_TRA ~rr/tra/ee/%LANGUAGE%/game.tra~
-  END
+  INCLUDE ~rr/lib/always.tpa~
 END
 
 README ~rr/doc/readme_rr.html~
@@ -955,7 +936,7 @@ REQUIRE_PREDICATE ENGINE_IS ~tob bg2ee~ AND GAME_INCLUDES ~tob~ @902
 
 LAUNCH_ACTION_MACRO ~RR#AFIX~
 
-INCLUDE "rr/lib/ds.tpa"                                              // Detectable Spells
+INCLUDE "rr/lib/ds.tph"                                              // Detectable Spells
 
 
 // Update the Bard 2DAs with RR's revised HLA versions
@@ -1587,7 +1568,7 @@ REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND !GAME_IS ~iwd-in-bg2~ @90
 INCLUDE ~RR/LIB/RR#SSOB.TPH~                                        // Include the Short Sword of Backstabbing patch macro
 LAUNCH_ACTION_MACRO ~RR#AFIX~
 
-INCLUDE "rr/lib/ds.tpa"                                             // Detectable Spells
+INCLUDE "rr/lib/ds.tph"                                             // Detectable Spells
 
 ACTION_IF NOT MOD_IS_INSTALLED ITEM_REV.TP2 0 AND !GAME_IS ~iwdee~ BEGIN
   COPY ~RR/RR_CORE/BAM/RR#CKIEL.BAM~ override                         // Kiel's Buckler description icon (CSHLD20.BAM is missing in BG2)
@@ -2257,23 +2238,25 @@ COPY_EXISTING ~%tutu_var%MISC2P.ITM~ override                // Greagan's Harp
     INT_VAR
       check_globals = 0
       check_headers = 1
-      match_opocode = 174 // play sound effect
+      match_opcode = 174 // play sound effect
       match_timing = 4 // delayed
       duration = 48
   END
-  LPF ALTER_EFFECT
-    INT_VAR
-      check_globals = 0
-      check_headers = 1
-      match_opcode = 141 // lighting effects
-      opcode = 215 // play 3D effect
-      parameter1 = 0
-      parameter2 = 1 // effect plays over target
-      timing = 0
-      duration = 1
-    STR_VAR
-      resource = ~SPNWCHRM~
-  END
+  PATCH_IF NOT GAME_IS "bgee bg2ee eet"	// Not required on EE games
+    LPF ALTER_EFFECT
+      INT_VAR
+        check_globals = 0
+        check_headers = 1
+        match_opcode = 141 // lighting effects
+        opcode = 215 // play 3D effect
+        parameter1 = 0
+        parameter2 = 1 // effect plays over target
+        timing = 0
+        duration = 1
+      STR_VAR
+        resource = ~SPNWCHRM~
+    END
+  END  
 BUT_ONLY
 END // not on IWD:EE
 
@@ -3548,7 +3531,7 @@ REQUIRE_PREDICATE GAME_INCLUDES ~tob~ @902
 
 LAUNCH_ACTION_MACRO ~RR#AFIX~
 
-INCLUDE "rr/lib/ds.tpa"                                                      // Detectable Spells
+INCLUDE "rr/lib/ds.tph"                                                      // Detectable Spells
 
 // CoC area files
 
@@ -3844,7 +3827,7 @@ REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND GAME_INCLUDES ~soa~ @902
 
 LAUNCH_ACTION_MACRO ~RR#AFIX~
 
-INCLUDE "rr/lib/ds.tpa"                                                       // Detectable Spells
+INCLUDE "rr/lib/ds.tph"                                                       // Detectable Spells
 
 // Create scroll and potion distribution markers
 
