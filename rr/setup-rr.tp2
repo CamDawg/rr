@@ -2345,6 +2345,20 @@ COPY ~RR/RR_CORE/ITEMS/RR#BOW06.ITM~ override
       parameter1 = RESOLVE_STR_REF (@10016) // Magnetized
   END
 
+ACTION_IF enhanced_edition BEGIN 
+
+  // allow new shortbows to be usable by shaman on EEs
+  COPY_EXISTING ~rr#bow02.itm~ ~override~
+                ~rr#bow03.itm~ ~override~
+                ~rr#bow04.itm~ ~override~
+                ~rr#bow05.itm~ ~override~
+                ~rr#bow06.itm~ ~override~
+    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+    BUT_ONLY IF_EXISTS
+    
+END 
+
 
 // Darkveil (thieves' hood which grants immunity to gaze attacks)
 
@@ -3234,6 +3248,10 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~ override               // Stormcharged Axe
 
 COPY ~RR/RR_UPGR/ITEMS/RR#SCAX2.ITM~  override               // Stormcharged Axe +5
   SAY NAME2 @5006 SAY DESC @5007
+  PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
+    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+  END   
 
 COPY ~RR/RR_UPGR/SPELLS/RR#SCAX2.SPL~ override               // Static Discharge spell
   SAY NAME1 @5018 SAY NAME2 @5018
@@ -3304,7 +3322,6 @@ ACTION_IF round_bucklers BEGIN // Checks for 1PP v2.6+ and/or Item Revisions as 
     WRITE_ASCII 0x22 ~D1~ #2                                          // Set the animation to round buckler (D1)
   BUT_ONLY
 END
-
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -3596,10 +3613,18 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~             override              // Storm
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~             override              // Stormcharged Axe stun effect
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.ITM~             override              // Stormcharged Axe
   SAY NAME2 @206 SAY DESC @207
+  PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
+    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+  END   
 COPY ~RR/RR_CYRIC/ITEMS/RR#BOW01.ITM~             override              // Blindstrike Bow
   SAY NAME1 @150 SAY NAME2 @234 SAY 0x50 @151 SAY DESC @235
   WRITE_ASCIIE 0x22 ~%anim_bw%~ #2	//Short bow
   WRITE_ASCIIE 0x44 ~%anim_bwg%~ #8	// Short bow ground icon
+  PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
+    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+  END   
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWH.EFF~             override              // Blindstrike Bow THAC0 vs. Beholders bonus
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWD.EFF~             override              // Blindstrike Bow damage vs. Beholders bonus
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWS.EFF~             override              // Blindstrike Bow Beholder saving throw penalty vs. blindness effect
