@@ -270,7 +270,7 @@ END
 
 // BGT specific compatibility for anti-stealing container script changes (Note: this block *deliberately* affects *only* BGT due to its own thievery fixes)
 
-ACTION_IF GAME_IS ~bgt~ BEGIN    // BGT check
+ACTION_IF game_is_bgt BEGIN    // BGT check
   COMPILE ~RR/RR_CORE/COMPILE/HALFEN.D~ // Halfling Enforcer theft dialogue revision
   COPY_EXISTING ~ACT01.BCS~  ~override~ // container alarm script
                 ~ACT02.BCS~  ~override~
@@ -302,7 +302,7 @@ END
 // ToBEx
 ACTION_IF FILE_EXISTS bgmain.exe BEGIN
   OUTER_SPRINT TOBEX_MOD_DIRECTORY "./rr/lib"
-  LOAD_TRA "rr/tra/english/tobex.tra" "rr/tra/%LANGUAGE%/tobex.tra"
+  LOAD_TRA "%tra_loc%/english/tobex.tra" "%tra_loc%/%LANGUAGE%/tobex.tra"
   ACTION_INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx.tpa"
 
   COPY "tobex_ini/tobextweak.ini" "tobex_ini/tobextweak.ini"
