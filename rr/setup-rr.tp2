@@ -2243,60 +2243,12 @@ COPY ~RR/RR_CORE/ITEMS/RR#HEL02.ITM~ override
 COPY ~RR/RR_CORE/BAM/RR#CGREA.BAM~   override                // Greagan's Harp description icon (CMISC2P.BAM is missing in BG2)
      ~RR/RR_CORE/BAM/RR#HEL02.BAM~   override
 
-ACTION_IF ((!GAME_IS ~iwdee~) AND (!MOD_IS_INSTALLED ITEM_REV.TP2 0)) BEGIN // not on IWD:EE, skip if IR has already changed it 
-  COPY_EXISTING ~%tutu_var%MISC2P.ITM~ override                // Greagan's Harp
-    WRITE_ASCII 0x58 ~RR#CGREA~ #8                             // use the proper description icon (CMISC2P.BAM is missing in BG2)
+ACTION_IF !GAME_IS ~iwdee~ BEGIN // not on IWD:EE
+
+  COPY ~RR/RR_CORE/ITEMS/rr#gharp.ITM~ ~override/%tutu_var%MISC2P.ITM~     // rr's Greagan's Harp
     SAY NAME2 @142 SAY DESC @143
-    LPF ALTER_ITEM_HEADER
-      INT_VAR
-        header_type = 3 // magical ability
-        primary_type = 4 // school: enchanter
-        secondary_type = 11 // disabling
-        charges = 3
-        drained = 3 // recharge
-        flag_recharge = 1 // recharge upon rest
-    END
-    LPF ALTER_EFFECT
-      INT_VAR
-        check_globals = 0
-        check_headers = 1
-        match_opcode = 5 // charm creature
-        parameter2 = 0 // charmed, target neutral after effect ends
-        duration = 48
-    END
-    LPF ALTER_EFFECT
-      INT_VAR
-        check_globals = 0
-        check_headers = 1
-        match_opcode = 142 // display special effect icon
-        duration = 48
-    END
-    LPF ALTER_EFFECT
-      INT_VAR
-        check_globals = 0
-        check_headers = 1
-        match_opcode = 174 // play sound effect
-        match_timing = 4 // delayed
-        duration = 48
-    END
-    PATCH_IF NOT GAME_IS "bgee bg2ee eet"	BEGIN // Not required on EE games
-      LPF ALTER_EFFECT
-        INT_VAR
-          check_globals = 0
-          check_headers = 1
-          match_opcode = 141 // lighting effects
-          opcode = 215 // play 3D effect
-          parameter1 = 0
-          parameter2 = 1 // effect plays over target
-          timing = 0
-          duration = 1
-        STR_VAR
-          resource = ~SPNWCHRM~
-      END
-    END  
-  END   
-  BUT_ONLY
-END // not on IWD:EE, IR
+    
+END // not on IWD:EE
 
 
 // Harp of Descant
