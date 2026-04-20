@@ -4,13 +4,52 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 
   OUTER_SET bg2_chapter = 0
   
+  INCLUDE ~rr/lib/game_checks.tpa~                                    // cam's game_is variables
   INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
   INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
   INCLUDE ~rr/lib/rr#sp2in.tph~                                       // Include my custom "Spell to Innate" function
   INCLUDE ~rr/lib/fl#bg1pal.tpa~                                      // BG1 Platform-Abstraction Library
   INCLUDE "rr/lib/lib.tpa"
-   
-  ACTION_IF ENGINE_IS ~bgee bg2ee~ BEGIN
+  
+  // set some baseline variables for use elsewhere
+  OUTER_SET bow_damage_scale = 0 // +1 bow means +1 damage on BGEE, IWDEE, and Tutu
+  OUTER_SET round_bucklers   = 0
+  OUTER_SET 1pp_palette      = 0
+  OUTER_SPRINT anim_bw bw
+  OUTER_SPRINT anim_bwg gbow01
+  OUTER_SPRINT anim_d3 d3
+  OUTER_SPRINT anim_d3g gshld03
+  OUTER_SPRINT anim_jb  ~~
+  OUTER_SPRINT anim_jbg ghelm01
+  
+  ACTION_IF (game_is_bgee OR game_is_iwdee OR tutu_gen) BEGIN // use 1pp ground, paperdoll animations for scale shields if available
+    OUTER_SET bow_damage_scale = 1
+  END  
+  
+  ACTION_IF (MOD_IS_INSTALLED 1pp.tp2 206 OR MOD_IS_INSTALLED ITEM_REV.TP2 0 OR FILE_MD5 ~override/wqld1g1.bam~ e1322a2c948b8997fe182603d6284f4a) BEGIN 
+    OUTER_SET round_bucklers = 1 // round buckler check
+  END   
+  
+  ACTION_IF ((MOD_IS_INSTALLED 1pp.tp2 103) OR (enhanced_edition)) BEGIN // use 1pp ground, paperdoll animations for scale shields if available
+    OUTER_SET 1pp_palette = 1
+  END  
+  
+  ACTION_IF ((MOD_IS_INSTALLED 1pp.tp2 210) OR (enhanced_edition)) BEGIN // use 1pp ground, paperdoll animations for short bows if available
+    OUTER_SPRINT anim_bw bs
+    OUTER_SPRINT anim_bwg gbow02
+  END  
+  
+  ACTION_IF ((MOD_IS_INSTALLED 1pp.tp2 206) OR (enhanced_edition)) BEGIN // use 1pp ground, paperdoll animations for scale shields if available
+    OUTER_SPRINT anim_d3 c7
+    OUTER_SPRINT anim_d3g gmshld
+  END  
+  
+  ACTION_IF ((MOD_IS_INSTALLED 1pp.tp2 208) OR (enhanced_edition)) BEGIN // use 1pp ground, paperdoll animations for circlets if available
+    OUTER_SPRINT anim_jb jb
+    OUTER_SPRINT anim_jbg gamul02
+  END 
+  
+  ACTION_IF enhanced_edition BEGIN
   
     ACTION_IF GAME_IS ~eet~ BEGIN
       OUTER_SET bg2_chapter = 12
