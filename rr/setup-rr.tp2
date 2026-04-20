@@ -3669,7 +3669,7 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#HELMS.ITM~             override              // Sune'
   PATCH_IF MOD_IS_INSTALLED 1pp.tp2 208 BEGIN
     WRITE_ASCII 0x22 ~JB~ #2	// 1pp circlet band icon (JB)
     WRITE_ASCII 0x44 ~GAMUL02~ #8    // amulet ground icon
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 END
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 target = 1 timing = 2 END
     PATCH_IF MOD_IS_INSTALLED 1pp.tp2 103 BEGIN
       LPF ALTER_EFFECT INT_VAR match_opcode = 7 parameter1 = 130 END
     END
@@ -3684,7 +3684,7 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#LCRWN.ITM~             override              // The B
     WRITE_ASCII 0x22 ~JB~ #2	// 1pp circlet band icon (JB)
     WRITE_ASCII 0x44 ~GAMUL02~ #8    // amulet ground icon
   END
-	LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 END
+	LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 target = 1 timing = 2 END
 	PATCH_IF MOD_IS_INSTALLED 1pp.tp2 103 BEGIN
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 parameter1 = 133 END
 	END
