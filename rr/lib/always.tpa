@@ -48,7 +48,7 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
     OUTER_SPRINT anim_jb jb
     OUTER_SPRINT anim_jbg gamul02
   END 
-  
+
   ACTION_IF enhanced_edition BEGIN
   
     ACTION_IF GAME_IS ~eet~ BEGIN
@@ -63,13 +63,13 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
       infer_charsets = 1
       STR_VAR
       tra_path = "rr/tra"
-      out_path = "%tra_loc%"
+      out_path = "weidu_external/rr/lang"
       default_language = "english"
       iconv_path = "rr/tra/iconv" //available as part of the base system on OS X and GNU/Linux
       reload_array = charsetsReloadArray
       noconvert_array = charsetsNoConvertArray
     END
-    
+
     LOAD_TRA ~rr/tra/ee/%LANGUAGE%/game.tra~ // overrides mainline game.tra strings
     
   END ELSE BEGIN
