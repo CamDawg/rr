@@ -2243,10 +2243,9 @@ COPY ~RR/RR_CORE/ITEMS/RR#HEL02.ITM~ override
 COPY ~RR/RR_CORE/BAM/RR#CGREA.BAM~   override                // Greagan's Harp description icon (CMISC2P.BAM is missing in BG2)
      ~RR/RR_CORE/BAM/RR#HEL02.BAM~   override
 
-ACTION_IF !GAME_IS ~iwdee~ BEGIN // not on IWD:EE
-COPY_EXISTING ~%tutu_var%MISC2P.ITM~ override                // Greagan's Harp
-  WRITE_ASCII 0x58 ~RR#CGREA~ #8                             // use the proper description icon (CMISC2P.BAM is missing in BG2)
-  PATCH_IF NOT MOD_IS_INSTALLED ITEM_REV.TP2 0 BEGIN
+ACTION_IF ((!GAME_IS ~iwdee~) AND (!MOD_IS_INSTALLED ITEM_REV.TP2 0)) BEGIN // not on IWD:EE, skip if IR has already changed it 
+  COPY_EXISTING ~%tutu_var%MISC2P.ITM~ override                // Greagan's Harp
+    WRITE_ASCII 0x58 ~RR#CGREA~ #8                             // use the proper description icon (CMISC2P.BAM is missing in BG2)
     SAY NAME2 @142 SAY DESC @143
     LPF ALTER_ITEM_HEADER
       INT_VAR
@@ -2296,8 +2295,8 @@ COPY_EXISTING ~%tutu_var%MISC2P.ITM~ override                // Greagan's Harp
       END
     END  
   END   
-BUT_ONLY
-END // not on IWD:EE
+  BUT_ONLY
+END // not on IWD:EE, IR
 
 
 // Harp of Descant
