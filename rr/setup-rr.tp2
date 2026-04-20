@@ -2240,6 +2240,7 @@ COPY ~RR/RR_CORE/BAM/RR#CGREA.BAM~   override                // Greagan's Harp d
 ACTION_IF !game_is_iwdee BEGIN // not on IWD:EE
 
   COPY ~RR/RR_CORE/ITEMS/rr#gharp.ITM~ ~override/%tutu_var%MISC2P.ITM~     // rr's Greagan's Harp
+    SAY NAME1 #38789 SAY 0x50 #39668
     SAY NAME2 @142 SAY DESC @143
     
 END // not on IWD:EE
