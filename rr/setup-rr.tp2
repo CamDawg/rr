@@ -100,8 +100,6 @@ LAF rogue_twf END
 BEGIN @2 DESIGNATED 1
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
 
-LAUNCH_ACTION_MACRO ~RR#AFIX~
-
 // Assassin kit revision
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS00.SPL~ override               // Assassin save vs. poison bonus
@@ -118,16 +116,28 @@ COPY ~RR/RR_CORE/SPELLS/RR#TAS01.SPL~ override               // Assassin Death A
   SAY NAME1 @36 SAY NAME2 @36 // Death Attack
   SAY UNIDENTIFIED_DESC @11002
   WRITE_BYTE 0x27 RR#DEATA                                   // assign new secondary type
-  LPF ALTER_EFFECT
-    INT_VAR
-      check_globals = 0
-      check_headers = 1
-      match_opcode = 206 // protection from spell
-      match_parameter1 = 74011 // You cannot cast this spell until the current casting has run out.
-      parameter1 = RESOLVE_STR_REF (@10006) // You cannot cast this spell until the current casting has run out.
-  END
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END ELSE BEGIN
+    LPF ALTER_EFFECT
+      INT_VAR
+        check_globals = 0
+        check_headers = 1
+        match_opcode = 206 // protection from spell
+        match_parameter1 = 74011 // You cannot cast this spell until the current casting has run out.
+        parameter1 = RESOLVE_STR_REF (@10006) // You cannot cast this spell until the current casting has run out.
+    END
+  END   
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS1B.SPL~ override               // Death Attack second part (the actual ability)
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    PATCH_IF (death_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 13 opcode = 324 parameter1 = death_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+    END     
+  END 
   LPF ALTER_EFFECT
     INT_VAR
       check_globals = 0
@@ -144,6 +154,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#TAS2B.EFF~ override               // Poison Weapon pr
 BUT_ONLY
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS2B.SPL~ override               // Poison Weapon second part (the actual ability)
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    LPF CLONE_EFFECT INT_VAR match_opcode = 25 opcode = 318 parameter2 = 77 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END // poison resist >= 100      
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
+  END 
 
 COPY_EXISTING SPCL423.SPL ~override/fl#tas02.spl~            // Poison Weapon Assassin ability
   SAY UNIDENTIFIED_DESC @11001
@@ -162,7 +179,7 @@ COPY_EXISTING SPCL423.SPL ~override/fl#tas02.spl~            // Poison Weapon As
         resource = RR#TAS02
     END
   END
-  PATCH_IF ENGINE_IS ~bgee bg2ee~ BEGIN
+  PATCH_IF enhanced_edition BEGIN
     LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 321 END
     LPF ADD_SPELL_EFFECT
       INT_VAR
@@ -266,6 +283,10 @@ COPY ~RR/RR_CORE/SPELLS/RR#TBH01.SPL~ override                 // RR's revised B
   END
 
 COPY ~RR/RR_CORE/SPELLS/RR#TBH1A.SPL~ override                 // Alchemical Trap subdual damage
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals/mist
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#TBH1A.EFF~ override                 // Alchemical Trap subdual damage immunity
   SAY 0x1C @90 // Immune to subdual damage
@@ -294,7 +315,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.SPL~ override                 // Alchemical Tra
       match_opcode = 139 // display string
       match_parameter1 = 1474 // Blinded
       parameter1 = RESOLVE_STR_REF (@10012) // Blinded
-  END
+  END  
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 END // class checks
+  END  
+
 
 COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.EFF~ override                 // Alchemical Trap secondary effects immunity
      ~RR/RR_CORE/BAM/RR#TRNQ.BAM~     override                 // Bounty Hunter's Paralytic Toxin innate ability icon
@@ -305,17 +332,26 @@ COPY ~RR/RR_CORE/SPELLS/RR#TRNQ2.EFF~ override                 // Paralytic Toxi
 
 COPY ~RR/RR_CORE/SPELLS/RR#TRNQ.SPL~  override                 // Bounty Hunter's Paralytic Toxin innate ability (coat weapons shell)
   SAY NAME1 @55 SAY NAME2 @55 // Paralytic Toxin
-  SAY UNIDENTIFIED_DESC @11003
-  LPF ALTER_EFFECT
-    INT_VAR
-      check_globals = 0
-      check_headers = 1
-      match_opcode = 206 // protection from spell
-      match_parameter1 = 74011 // You cannot cast this spell until the current casting has run out.
-      parameter1 = RESOLVE_STR_REF (@10006) // You cannot cast this spell until the current casting has run out.
-  END
+  SAY UNIDENTIFIED_DESC @11003                           // assign new secondary type
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END ELSE BEGIN
+    LPF ALTER_EFFECT
+      INT_VAR
+        check_globals = 0
+        check_headers = 1
+        match_opcode = 206 // protection from spell
+        match_parameter1 = 74011 // You cannot cast this spell until the current casting has run out.
+        parameter1 = RESOLVE_STR_REF (@10006) // You cannot cast this spell until the current casting has run out.
+    END
+  END  
 
 COPY ~RR/RR_CORE/SPELLS/RR#TRNQ2.SPL~ override                 // Paralytic Toxin second part (the actual ability)
+  PATCH_IF enhanced_edition BEGIN // use 318s instead of 177s
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END  
 
 COPY_EXISTING ~LUABBR.2DA~            override                 // Master HLA table
   SET_2DA_ENTRY 39 1 1 ~Th3~                                   // Give Bounty Hunters a new HLA table designation
@@ -326,7 +362,7 @@ COPY_EXISTING  ~LUTH0.2DA~           ~override/LUTH3.2DA~      // Bountu Hunter'
   PRETTY_PRINT_2DA
 BUT_ONLY
 
-ACTION_IF GAME_INCLUDES ~tob~ BEGIN
+ACTION_IF game_includes_tob BEGIN
   STRING_SET ~71467~ @34                                       // Tracking HLA description updated to include Bounty Hunters
 END
 
@@ -346,8 +382,6 @@ LAF set_kit_description STR_VAR kit = bounty_hunter desc END
 
 BEGIN @19 DESIGNATED 2
 REQUIRE_PREDICATE ENGINE_IS ~tob bg2ee iwdee~ AND GAME_INCLUDES ~tob~ @902
-
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 
 // Update the Thief 2DAs with RR's revised HLA versions
@@ -596,8 +630,6 @@ BUT_ONLY
 
 BEGIN @3 DESIGNATED 4
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
-
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 ACTION_IF ((!game_is_iwdee) AND                                                // don't change the True Bard song on IWD:EE 
            (!MOD_IS_INSTALLED ~iwdification/setup-iwdification.tp2~ ~50~)) BEGIN // or if bard songs from IWDification is installed
@@ -931,8 +963,6 @@ END
 
 BEGIN @4 DESIGNATED 5
 REQUIRE_PREDICATE ENGINE_IS ~tob bg2ee~ AND GAME_INCLUDES ~tob~ @902
-
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 INCLUDE "rr/lib/ds.tph"                                              // Detectable Spells
 
@@ -1564,7 +1594,6 @@ BEGIN @5 DESIGNATED 7                                               // Additiona
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND !GAME_IS ~iwd-in-bg2~ @902
 
 INCLUDE ~RR/LIB/RR#SSOB.TPH~                                        // Include the Short Sword of Backstabbing patch macro
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 INCLUDE "rr/lib/ds.tph"                                             // Detectable Spells
 
@@ -3229,8 +3258,6 @@ END                                                                            /
 BEGIN @18 DESIGNATED 8
 REQUIRE_PREDICATE GAME_INCLUDES ~tob~ @902
 
-LAUNCH_ACTION_MACRO ~RR#AFIX~
-
 
 COPY ~RR/RR_UPGR/ITEMS/RR#BUC11.ITM~  override               // Blazing Glory (Fading Glory upgrade)
   SAY NAME2 @5000 SAY DESC @5001
@@ -3333,7 +3360,6 @@ REQUIRE_PREDICATE !ENGINE_IS ~iwdee~ ~Revised Thievery is not yet available for 
 
 INCLUDE ~RR/LIB/RR#IDTLS.TPH~                                       // Include my custom "Identify Top Level Script" function
 INCLUDE ~RR/LIB/RR#THVRY.TPH~                                       // Include the Revised Thievery macro (hosts main code)
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 // *** For fellow modders *** this subcomponent can be detected by searching for the following file - RR#PNP36.SPL
 
@@ -3440,8 +3466,6 @@ END
 BEGIN @16 DESIGNATED 10  // Retain default thievery potions and prevent their effects from stacking
 SUBCOMPONENT @8  // Revised Thievery
 
-LAUNCH_ACTION_MACRO ~RR#AFIX~
-
 // *** For fellow modders *** this subcomponent can be detected by searching for the following file - RR#PTN36.SPL
 
 INCLUDE ~RR/LIB/RR#IDTLS.TPH~                                                      // Include my custom "Identify Top Level Script" function
@@ -3544,8 +3568,6 @@ END                                                                             
 
 BEGIN @6 DESIGNATED 11
 REQUIRE_PREDICATE GAME_INCLUDES ~tob~ @902
-
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 INCLUDE "rr/lib/ds.tph"                                                      // Detectable Spells
 
@@ -3862,8 +3884,6 @@ END
 
 BEGIN @7 DESIGNATED 12
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND GAME_INCLUDES ~soa~ @902
-
-LAUNCH_ACTION_MACRO ~RR#AFIX~
 
 INCLUDE "rr/lib/ds.tph"                                                       // Detectable Spells
 

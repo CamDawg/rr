@@ -7,7 +7,7 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
   INCLUDE ~rr/lib/game_checks.tpa~                                    // cam's game_is variables
   INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
   INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
-  INCLUDE ~rr/lib/rr#sp2in.tph~                                       // Include my custom "Spell to Innate" function
+  INCLUDE ~rr/lib/cd_clone_spell_bulk_first.tpa~                      // Include my custom "Spell to Innate" function
   INCLUDE ~rr/lib/fl#bg1pal.tpa~                                      // BG1 Platform-Abstraction Library
   INCLUDE "rr/lib/lib.tpa"
   
@@ -51,6 +51,19 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 
   ACTION_IF enhanced_edition BEGIN
   
+   // eefp immunity spellstates - if available they get a value, if not they're set to -1
+    OUTER_SET charm_immunity     = IDS_OF_SYMBOL (~splstate~ ~CHARM_IMMUNITY~)
+    OUTER_SET confusion_immunity = IDS_OF_SYMBOL (~splstate~ ~CONFUSION_IMMUNITY~)
+    OUTER_SET death_immunity     = IDS_OF_SYMBOL (~splstate~ ~DEATH_IMMUNITY~)
+    OUTER_SET entangle_immunity  = IDS_OF_SYMBOL (~splstate~ ~ENTANGLE_IMMUNITY~)
+    OUTER_SET haste_immunity     = IDS_OF_SYMBOL (~splstate~ ~HASTE_IMMUNITY~)
+    OUTER_SET hold_immunity      = IDS_OF_SYMBOL (~splstate~ ~HOLD_IMMUNITY~)
+    OUTER_SET panic_immunity     = IDS_OF_SYMBOL (~splstate~ ~PANIC_IMMUNITY~)
+    OUTER_SET silence_immunity   = IDS_OF_SYMBOL (~splstate~ ~SILENCE_IMMUNITY~)
+    OUTER_SET sleep_immunity     = IDS_OF_SYMBOL (~splstate~ ~SLEEP_IMMUNITY~)
+    OUTER_SET slow_immunity      = IDS_OF_SYMBOL (~splstate~ ~SLOW_IMMUNITY~)
+    OUTER_SET web_immunity       = IDS_OF_SYMBOL (~splstate~ ~WEB_IMMUNITY~)
+  
     ACTION_IF GAME_IS ~eet~ BEGIN
       OUTER_SET bg2_chapter = 12
     END
@@ -74,6 +87,18 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
     
   END ELSE BEGIN
   
+    OUTER_SET charm_immunity     = "-1" // eefp immunity spellstates, n/a for non-ee
+    OUTER_SET confusion_immunity = "-1"
+    OUTER_SET death_immunity     = "-1"
+    OUTER_SET entangle_immunity  = "-1"
+    OUTER_SET haste_immunity     = "-1"
+    OUTER_SET hold_immunity      = "-1"
+    OUTER_SET panic_immunity     = "-1"
+    OUTER_SET silence_immunity   = "-1"
+    OUTER_SET sleep_immunity     = "-1"
+    OUTER_SET slow_immunity      = "-1"
+    OUTER_SET web_immunity       = "-1"
+  
     // Old engine, just define tra_loc
     OUTER_SPRINT tra_loc "rr/tra"
     
@@ -86,4 +111,8 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
   END
 
 END 
+
+ACTION_IF !COMPONENT_NUMBER BEGIN // used on everything but component zero, so
+  LAUNCH_ACTION_MACRO ~RR#AFIX~
+END   
 
