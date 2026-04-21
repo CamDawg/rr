@@ -459,6 +459,10 @@ COPY ~RR/RR_CORE/BAM/RR#THL2B.BAM~    override                 // Danger Sense i
 COPY ~RR/RR_CORE/SPELLS/RR#THL02.SPL~ override                 // Danger Sense (replaces default Evasion)
   SAY NAME1 @8000 SAY NAME2 @8000
   SAY UNIDENTIFIED_DESC @8001 SAY DESC @8001
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END
 
 COPY ~RR/RR_CORE/BAM/RR#THL3B.BAM~    override                 // New Evasion icon
 
@@ -472,15 +476,19 @@ COPY ~RR/RR_CORE/SPELLS/RR#THL03.SPL~ override                 // Evasion (repla
       match_parameter1 = 14094 // "Immunity To Effect"
       parameter1 = RESOLVE_STR_REF (@8002) // Evades Effects
   END
-  PATCH_FOR_EACH spell IN rr#wi103 rr#wi304 rr#wi308 rr#pr302 rr#pflam rr#mligt BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 parameter1 = RESOLVE_STR_REF (@8002) insert_point = "-1" duration = 30 STR_VAR resource = EVAL "%spell%" END
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first match_resource = RR#THL03 END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 STR_VAR match_resource = RR#THL03 END
   END
-
 
 COPY ~RR/RR_CORE/BAM/RR#THL1B.BAM~    override                 // Crippling Strike icon
 COPY ~RR/RR_CORE/SPELLS/RR#THL01.SPL~ override                 // Crippling Strike (coat weapons shell + maximum damage effect)
   SAY NAME1 @8004 SAY NAME2 @8004
   SAY UNIDENTIFIED_DESC @8005 SAY DESC @8005
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END
 
 COPY ~RR/RR_CORE/SPELLS/RR#THL1A.SPL~ override                 // Crippling Strike (the actual ability)
   LPF ALTER_EFFECT
@@ -491,6 +499,12 @@ COPY ~RR/RR_CORE/SPELLS/RR#THL1A.SPL~ override                 // Crippling Stri
       match_parameter1 = 14042 // "Strength Modification"
       parameter1 = RESOLVE_STR_REF (@716) // Crippled
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, use 321 to stop stacking
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#THL1A.EFF~ override                 // Crippling Strike cast secondary spell EFF
      ~RR/RR_CORE/SPELLS/RR#THL1B.EFF~ override                 // Crippling Strike protect from secondary spell EFF (for Golems, Undead...etc.)
@@ -518,6 +532,10 @@ COPY ~RR/RR_CORE/BAM/RR#THL5B.BAM~    override                 // Insightful Str
 COPY ~RR/RR_CORE/SPELLS/RR#THL05.SPL~ override                 // Insightful Strike (replaces Crippling Strike for Swashbucklers)
   SAY NAME1 @8012 SAY NAME2 @8012
   SAY UNIDENTIFIED_DESC @8013 SAY DESC @8013
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END
 
 COPY ~RR/RR_STIM/ITEMS/RR#INV.ITM~    override                 // Invulnerability item for cutscene creatures
      ~RR/RR_CORE/ACTORS/RR#ALCH.CRE~  override                 // Alchemy invisible creature (used for initiating the dialogue)
@@ -544,6 +562,11 @@ COPY ~rr/rr_core/spells/rr#thl06.spl~ override                 // Set Exploding 
     INT_VAR
       projectile = rr#trpex
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, use 321 to stop stacking
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 STR_VAR match_resource = rr#thl6b END // remove dupe 177s
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 STR_VAR resource = rr#thl06 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 STR_VAR resource = rr#thl06 END // class checks
+  END 
 
 COPY_EXISTING ~spcl911.spl~ override                           // Set Exploding Trap (primary SPL)
   SAY UNIDENTIFIED_DESC @8016 SAY DESC @8016                   // updated description
