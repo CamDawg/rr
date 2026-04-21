@@ -22,8 +22,7 @@ ADD_PROJECTILE ~RR/RR_CORE/PRO/RR#VRPO.PRO~                                     
 
 ADD_SECTYPE RR#DEATA @37                                                                       // add a new secondary type to remove Death Attack after the first successful hit
 
-ADD_SECTYPE RR#FSCNT @92                                                                       // add a new secondary type to remove Fascinate/Mesmerize effects
-
+ADD_SECTYPE RR#FSCNT @92  
 
 // New secondary type removal spells
 
@@ -304,7 +303,7 @@ INCLUDE ~rr/lib/cd_clone_spell_bulk_last.tpa~
 // New thievery related spells
 
 COPY    ~RR/RR_CORE/SPELLS/RR#FEAR.SPL~   ~override~                               // Custom Fear spell, used by Revised Thievery for familiar panicking
-  PATCH_IF (panic_immunity > 0) BEGIN
+  PATCH_IF (panic_immunity >= 0) BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 24 opcode = 324 parameter1 = panic_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
   END 
 

@@ -797,7 +797,6 @@ COPY_EXISTING ~SPCL542.SPL~ override                          // Skald song chan
 BUT_ONLY
 
 COPY ~RR/RR_CORE/SPELLS/RR#BSK00.SPL~ override                // Revised Skald song
-  LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 267 END
   LPF protection_from_string
     INT_VAR
       header = 1
@@ -852,7 +851,6 @@ LAF set_kit_description STR_VAR kit = skald desc END
 // Jester kit revision
 
 COPY ~RR/RR_CORE/SPELLS/RR#BJSIT.SPL~ override                // New innate traits for the Jester kit
-  LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 267 END
   LPF protection_from_string
     INT_VAR
       target = 1
@@ -1166,11 +1164,57 @@ COPY ~RR/RR_CORE/SPELLS/RR#BDF03.SPL~ override                      // True Bard
   SAY NAME1 @47 SAY NAME2 @47 SAY UNIDENTIFIED_DESC @48 SAY DESC @48
 
 COPY ~RR/RR_CORE/SPELLS/RR#BDF04.SPL~ override                      // True Bard's Enhanced Song part 2
+  LPF protection_from_string
+    INT_VAR
+      target = 2
+      timing = 10
+      duration = 100
+    STR_VAR
+      string = "panic"
+  END
+  PATCH_IF enhanced_edition BEGIN  
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END   
+    PATCH_IF (charm_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 END // clone immunity into spell state
+    END   
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#BSK01.SPL~ override                      // Skald's Enhanced Song part 1
   SAY NAME1 @49 SAY NAME2 @49 SAY UNIDENTIFIED_DESC @50 SAY DESC @50
 
 COPY ~RR/RR_CORE/SPELLS/RR#BSK02.SPL~ override                      // Skald's Enhanced Song part 2
+  PATCH_FOR_EACH string IN stun confused panic BEGIN
+    LPF protection_from_string
+      INT_VAR
+        target = 2
+        timing = 10
+        duration = 100
+      STR_VAR
+        string
+    END
+  END  
+  PATCH_IF enhanced_edition BEGIN  
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END   
+    PATCH_IF (confusion_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 128 opcode = 328 parameter2 = confusion_immunity special = 1 END // clone immunity into spell state
+    END   
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#BJS01.SPL~ override                      // Jester's Enhanced Song part 1
   SAY NAME1 @51 SAY NAME2 @51 SAY UNIDENTIFIED_DESC @52 SAY DESC @52
@@ -1184,6 +1228,32 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS02.SPL~ override                      // Jester's 
       match_parameter1 = 17424 // "Bad Luck"
       parameter1 = RESOLVE_STR_REF (@81) // Distracted
   END
+  PATCH_FOR_EACH string IN stun sleep charm held BEGIN
+    LPF protection_from_string
+      INT_VAR
+        insert = 4
+        target = 1
+        timing = 0
+        duration = 7
+      STR_VAR
+        string
+    END
+  END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race/general; use 321s to prevent stacking on EEs, not 206    
+    PATCH_IF (sleep_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 39 opcode = 328 parameter2 = sleep_immunity special = 1 END // clone immunity into spell state
+    END      
+    PATCH_IF (charm_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 END // clone immunity into spell state
+    END      
+    PATCH_IF (hold_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 175 opcode = 328 parameter2 = hold_immunity special = 1 END // clone immunity into spell state
+    END  
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 
 
@@ -1195,11 +1265,59 @@ COPY ~RR/RR_CORE/SPELLS/RR#BDF05.SPL~ override                      // True Bard
   SAY NAME1 @67 SAY NAME2 @67 SAY UNIDENTIFIED_DESC @68 SAY DESC @68
 
 COPY ~RR/RR_CORE/SPELLS/RR#BDF06.SPL~ override                      // True Bard's Lingering Song part 2
+  LPF protection_from_string
+    INT_VAR
+      target = 2
+      timing = 10
+      duration = 300
+    STR_VAR
+      string = "panic"
+  END
+  PATCH_IF enhanced_edition BEGIN  
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END   
+    PATCH_IF (charm_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 END // clone immunity into spell state
+    END   
+    LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = ~rr#bdf06~ END 
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#BSK03.SPL~ override                      // Skald's Lingering Song part 1
   SAY NAME1 @67 SAY NAME2 @67 SAY UNIDENTIFIED_DESC @68 SAY DESC @68
 
 COPY ~RR/RR_CORE/SPELLS/RR#BSK04.SPL~ override                      // Skald's Lingering Song part 2
+  PATCH_FOR_EACH string IN stun panic confused BEGIN
+    LPF protection_from_string
+      INT_VAR
+        target = 2
+        timing = 10
+        duration = 300
+      STR_VAR
+        string
+    END
+  END
+  PATCH_IF enhanced_edition BEGIN  
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END   
+    PATCH_IF (confusion_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 128 opcode = 328 parameter2 = confusion_immunity special = 1 END // clone immunity into spell state
+    END   
+    LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = ~rr#bsk04~ END 
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#BJS03.SPL~ override                      // Jester's Lingering Song part 1
   SAY NAME1 @67 SAY NAME2 @67 SAY UNIDENTIFIED_DESC @68 SAY DESC @68
@@ -1213,6 +1331,33 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS04.SPL~ override                      // Jester's 
       match_parameter1 = 17424 // "Bad Luck"
       parameter1 = RESOLVE_STR_REF (@81) // Distracted
   END
+  PATCH_FOR_EACH string IN stun charm BEGIN
+    LPF protection_from_string
+      INT_VAR
+        insert = 4
+        target = 1
+        timing = 0
+        duration = 18
+      STR_VAR
+        string
+    END
+  END   
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race/general; use 321s to prevent stacking on EEs, not 206    
+    PATCH_IF (sleep_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 39 opcode = 328 parameter2 = sleep_immunity special = 1 END // clone immunity into spell state
+    END      
+    PATCH_IF (charm_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 END // clone immunity into spell state
+    END      
+    PATCH_IF (hold_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 175 opcode = 328 parameter2 = hold_immunity special = 1 END // clone immunity into spell state
+    END  
+    LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = ~rr#bjs04~ END 
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 LAM load_RR#FSCNT_var
 
@@ -1246,6 +1391,12 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL01.EFF~ override                      // Prevents 
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL01.SPL~ override                      // Mass Charm spell file
   SAY NAME1 @40 SAY NAME2 @40 SAY UNIDENTIFIED_DESC @41 SAY DESC @41
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race; use 318s to prevent charm-immune creature  
+    PATCH_IF (charm_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 5 opcode = 324 parameter1 = charm_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+    END      
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END  
 
 
 // Enthralling Melody
@@ -1266,6 +1417,12 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL02.SPL~ override                      // Enthralli
       match_parameter1 = 23744 // "Feebleminded"
       parameter1 = RESOLVE_STR_REF (@93) // Fascinated
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race; use 318s to prevent confusion-immune creature 
+    PATCH_IF (confusion_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+    END      
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END  
 
 
 
@@ -1294,6 +1451,22 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL07.EFF~ override                      // Revised M
 COPY ~RR/RR_CORE/SPELLS/RR#WSIC.SPL~  override                      // Spirit Warrior's Aura of Courage ability
   SAY NAME1 @70 SAY NAME2 @70
   SAY UNIDENTIFIED_DESC @70 SAY DESC @70 // Aura of Courage
+  LPF protection_from_string
+    INT_VAR
+      target = 2
+      timing = 0
+      duration = 60
+    STR_VAR
+      string = "panic"
+  END
+  PATCH_IF enhanced_edition BEGIN  
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END  
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#WSSK.SPL~  override                      // Spirit Warrior's power up ability (used when summoned by a Skald)
      ~RR/RR_CORE/ITEMS/RR#WSAX1.ITM~  override                      // Spirit Warrior's primary axe (with on hit effects)
@@ -1370,6 +1543,10 @@ COPY ~RR/RR_CORE/BAM/RR#BHL5B.BAM~    override                      // Resonatin
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL05.SPL~ override                      // Resonating Weapon (coat weapons shell)
   SAY NAME1 @8006 SAY NAME2 @8006 SAY UNIDENTIFIED_DESC @8007 SAY DESC @8007
+  PATCH_IF enhanced_edition BEGIN // use 321s to prevent stacking on EEs, not 206
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL5A.SPL~ override                      // Resonating Weapon (the actual ability)
      ~RR/RR_CORE/SPELLS/RR#BHL05.EFF~ override                      // Resonating Weapon cast secondary spell EFF
@@ -1383,7 +1560,12 @@ COPY ~RR/RR_CORE/BAM/RR#BHL6A.BAM~    override                      // Sound Bar
 COPY ~RR/RR_CORE/SPELLS/RR#BHL06.SPL~ override                      // Sound Barrier (immunities + trigger secondary spell on hit)
   SAY NAME1 @8008 SAY NAME2 @8008
   SAY UNIDENTIFIED_DESC @8009 SAY DESC @8009
-  LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 parameter1 = 4742 duration = 30 insert_point = "-1" STR_VAR resource = fl#shout END //Immunity to shout spell, used by Ultroloths (message=Spell Ineffective)
+  PATCH_FOR_EACH spl IN WIZARD_SHOUT WIZARD_GREAT_SHOUT BEGIN // IWD spells in BG2 via whatever
+    SET num = (IDS_OF_SYMBOL (~spell~ ~%spl%~) - 2000)
+    PATCH_IF num >= 0 BEGIN 
+      LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 206 STR_VAR resource = EVAL ~spwi%num%~ END
+    END
+  END    
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL6A.SPL~ override                      // Sound Barrier (secondary spell, damage + stun + deafness)
 
@@ -1564,6 +1746,31 @@ END
 ACTION_IF !VARIABLE_IS_SET RR#DDoor450 BEGIN
   OUTER_SPRINT RR#DDoor450 ~~
 END
+
+// IWD spells via IWDification or others
+OUTER_FOR (index = 1; index < 10; ++index) BEGIN // init iwdpspells1-9
+  OUTER_SPRINT EVAL ~iwdspells%index%~ ~~
+END
+ACTION_IF FILE_EXISTS ~weidu_external/iwdspells/generic_arcane.tpa~ BEGIN // if iwdspells installed somewhere
+
+  INCLUDE ~weidu_external/iwdspells/generic_arcane.tpa~ // creates iwdspells_arcane array
+
+  ACTION_PHP_EACH iwdspells_arcane AS params => spell BEGIN 
+    ACTION_MATCH params_4 WITH 
+      1 BEGIN OUTER_SPRINT iwdspells1 ~~~~~%iwdspells1%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(50)   DestroyGold(50)   RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      2 BEGIN OUTER_SPRINT iwdspells2 ~~~~~%iwdspells2%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(100)  DestroyGold(100)  RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      3 BEGIN OUTER_SPRINT iwdspells3 ~~~~~%iwdspells3%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(150)  DestroyGold(150)  RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      4 BEGIN OUTER_SPRINT iwdspells4 ~~~~~%iwdspells4%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(250)  DestroyGold(250)  RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      5 BEGIN OUTER_SPRINT iwdspells5 ~~~~~%iwdspells5%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(500)  DestroyGold(500)  RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      6 BEGIN OUTER_SPRINT iwdspells6 ~~~~~%iwdspells6%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(1000) DestroyGold(1000) RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      7 BEGIN OUTER_SPRINT iwdspells7 ~~~~~%iwdspells7%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(1500) DestroyGold(1500) RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      8 BEGIN OUTER_SPRINT iwdspells8 ~~~~~%iwdspells8%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(2500) DestroyGold(2500) RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      9 BEGIN OUTER_SPRINT iwdspells9 ~~~~~%iwdspells9%%WNL% IF ~HaveSpell(%params_5%)~ THEN REPLY #%params_2% DO ~TakePartyGold(5000) DestroyGold(5000) RemoveSpell(%params_5%) GiveItemCreate("%params_1%",Myself,1,1,1)~ EXIT~~~~~ END
+      DEFAULT
+    END
+  END
+
+END 
 
 COPY ~RR/RR_CORE/ACTORS/RR#SCRL.CRE~ override                // Scribe Scrolls invisible creature (used for initiating the dialogue)
      ~RR/RR_CORE/SPELLS/RR#SCRL.EFF~ override                // Scribe Scrolls invisible creature summoning EFF

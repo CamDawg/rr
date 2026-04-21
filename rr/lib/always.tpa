@@ -4,6 +4,7 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 
   OUTER_SET bg2_chapter = 0
   
+  
   INCLUDE ~rr/lib/game_checks.tpa~                                    // cam's game_is variables
   INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
   INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
@@ -112,7 +113,8 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 
 END 
 
-ACTION_IF !COMPONENT_NUMBER BEGIN // used on everything but component zero, so
+ACTION_IF (COMPONENT_NUMBER != 0) BEGIN // used on everything but component zero, so
+  PRINT ~reached afix~
   LAUNCH_ACTION_MACRO ~RR#AFIX~
 END   
 

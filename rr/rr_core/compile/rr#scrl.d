@@ -42,6 +42,7 @@ IF ~HaveSpell(2120)~ THEN REPLY #25866 DO ~TakePartyGold(50) DestroyGold(50) Rem
 IF ~HaveSpell(2123)~ THEN REPLY #8072 DO ~TakePartyGold(50) DestroyGold(50) RemoveSpell(2123) GiveItemCreate("SCRL6D",Myself,1,1,1)~ EXIT // Find Familiar
 IF ~HaveSpell(2125)~ THEN REPLY #38586 DO ~TakePartyGold(50) DestroyGold(50) RemoveSpell(2125) GiveItemCreate("SCRLA6",Myself,1,1,1)~ EXIT // Spook
 %SpellPackL1%
+%iwdspells1%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -70,6 +71,7 @@ IF ~HaveSpell(2221)~ THEN REPLY #7725 DO ~TakePartyGold(100) DestroyGold(100) Re
 IF ~HaveSpell(2223)~ THEN REPLY #38592 DO ~TakePartyGold(100) DestroyGold(100) RemoveSpell(2223) GiveItemCreate("SCRLA2",Myself,1,1,1)~ EXIT // Deafness
 IF ~HaveSpell(2224)~ THEN REPLY #38594 DO ~TakePartyGold(100) DestroyGold(100) RemoveSpell(2224) GiveItemCreate("SCRLA3",Myself,1,1,1)~ EXIT // Glitterdust
 %SpellPackL2%
+%iwdspells2%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -101,6 +103,7 @@ IF ~HaveSpell(2324)~ THEN REPLY #32379 DO ~TakePartyGold(150) DestroyGold(150) R
 IF ~HaveSpell(2325)~ THEN REPLY #38588 DO ~TakePartyGold(150) DestroyGold(150) RemoveSpell(2325) GiveItemCreate("SCRLA5",Myself,1,1,1)~ EXIT // Melf's Minute Meteor
 IF ~HaveSpell(2326)~ THEN REPLY #12026 DO ~TakePartyGold(150) DestroyGold(150) RemoveSpell(2326) GiveItemCreate("SCRL1E",Myself,1,1,1)~ EXIT // Dispel Magic
 %SpellPackL3%
+%iwdspells3%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -133,6 +136,7 @@ IF ~HaveSpell(2425)~ THEN REPLY #38596 DO ~TakePartyGold(250) DestroyGold(250) R
 %RR#DimensionDoor%
 %RR#DDoor450%
 %SpellPackL4%
+%iwdspells4%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -166,6 +170,7 @@ IF ~HaveSpell(2521)~ THEN REPLY #24829 DO ~TakePartyGold(500) DestroyGold(500) R
 IF ~HaveSpell(2522)~ THEN REPLY #10850 DO ~TakePartyGold(500) DestroyGold(500) RemoveSpell(2522) GiveItemCreate("SCRL7D",Myself,1,1,1)~ EXIT // Minor Spell Turning
 IF ~HaveSpell(2523)~ THEN REPLY #39964 DO ~TakePartyGold(500) DestroyGold(500) RemoveSpell(2523) GiveItemCreate("SCRLAL",Myself,1,1,1)~ EXIT // Sunfire
 %SpellPackL5%
+%iwdspells5%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -197,6 +202,7 @@ IF ~HaveSpell(2623)~ THEN REPLY ~%CarrionText%~ DO ~TakePartyGold(1000) DestroyG
 IF ~HaveSpell(2624)~ THEN REPLY #29213 DO ~TakePartyGold(1000) DestroyGold(1000) RemoveSpell(2624) GiveItemCreate("SCRL8B",Myself,1,1,1)~ EXIT // Summon Nishru
 IF ~HaveSpell(2625)~ THEN REPLY #32393 DO ~TakePartyGold(1000) DestroyGold(1000) RemoveSpell(2625) GiveItemCreate("SCRL8C",Myself,1,1,1)~ EXIT // Stone to Flesh
 %SpellPackL6%
+%iwdspells6%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -224,6 +230,7 @@ IF ~HaveSpell(2720)~ THEN REPLY #32409 DO ~TakePartyGold(1500) DestroyGold(1500)
 IF ~HaveSpell(2721)~ THEN REPLY #32427 DO ~TakePartyGold(1500) DestroyGold(1500) RemoveSpell(2721) GiveItemCreate("SCRL8W",Myself,1,1,1)~ EXIT // Mass Invisibility
 IF ~HaveSpell(2722)~ THEN REPLY #38598 DO ~TakePartyGold(1500) DestroyGold(1500) RemoveSpell(2722) GiveItemCreate("SCRLA4",Myself,1,1,1)~ EXIT // Limited Wish
 %SpellPackL7%
+%iwdspells7%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -245,6 +252,7 @@ IF ~HaveSpell(2816)~ THEN REPLY #39956 DO ~TakePartyGold(2500) DestroyGold(2500)
 IF ~HaveSpell(2817)~ THEN REPLY #39966 DO ~TakePartyGold(2500) DestroyGold(2500) RemoveSpell(2817) GiveItemCreate("SCRLAO",Myself,1,1,1)~ EXIT // Symbol Death
 IF ~HaveSpell(2818)~ THEN REPLY #63097 DO ~TakePartyGold(2500) DestroyGold(2500) RemoveSpell(2818) GiveItemCreate("SCRLB1",Myself,1,1,1)~ EXIT // Bigby's Clenched Fist
 %SpellPackL8%
+%iwdspells8%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
 
@@ -268,5 +276,6 @@ IF ~HaveSpell(2917)~ THEN REPLY #35553 DO ~TakePartyGold(5000) DestroyGold(5000)
 IF ~HaveSpell(2918)~ THEN REPLY #63153 DO ~TakePartyGold(5000) DestroyGold(5000) RemoveSpell(2918) GiveItemCreate("SCRLB2",Myself,1,1,1)~ EXIT // Bigby's Crushing Hand
 IF ~HaveSpell(2919)~ THEN REPLY #63157 DO ~TakePartyGold(5000) DestroyGold(5000) RemoveSpell(2919) GiveItemCreate("SCRLB4",Myself,1,1,1)~ EXIT // Wish
 %SpellPackL9%
+%iwdspells9%
 IF ~~ THEN REPLY @8261 GOTO RR#SCRL00 // Select a different spell level
 END
