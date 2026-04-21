@@ -654,9 +654,11 @@ BUT_ONLY
 BEGIN @3 DESIGNATED 4
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
 
-ACTION_IF ((!game_is_iwdee) AND                                                // don't change the True Bard song on IWD:EE 
-           (!MOD_IS_INSTALLED ~iwdification/setup-iwdification.tp2~ ~50~)) BEGIN // or if bard songs from IWDification is installed
-           
+ACTION_IF ((!game_is_iwdee) AND                                               // don't change the True Bard song on IWD:EE 
+           (!MOD_IS_INSTALLED ~iwdification/setup-iwdification.tp2~ ~50~) AND // or if bard songs from IWDSpells library are installed
+           (!MOD_IS_INSTALLED ~stratagems/setup-stratagems.tp2~ 1520) AND
+           (!MOD_IS_INSTALLED ~dw_som/dw_som.tp2~ 1520) AND
+           (!MOD_IS_INSTALLED ~dw_talents/dw_talents.tp2~ 1520)) BEGIN 
   // True Bard
 
   COPY_EXISTING ~CLABBA01.2DA~ override                         // True Bard ability table
@@ -670,7 +672,6 @@ END                                                           // ends IWD:EE che
 COPY ~RR/RR_CORE/SPELLS/RR#BDF01.SPL~ override                // True Bard new song part 1
 
 COPY ~RR/RR_CORE/SPELLS/RR#BDF02.SPL~ override                // True Bard new song part 2
-  LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 267 END
   LPF protection_from_string
     INT_VAR
       header = 3
@@ -679,6 +680,17 @@ COPY ~RR/RR_CORE/SPELLS/RR#BDF02.SPL~ override                // True Bard new s
     STR_VAR
       string = "panic"
   END
+  PATCH_IF enhanced_edition BEGIN 
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END 
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END  
 
 //String remains #9562 in BGEE
 STRING_SET ~9562~ @29                                         // Updated True Bard kit description
@@ -706,8 +718,14 @@ COPY_EXISTING ~CLABBA02.2DA~ override                         // Blade kit abili
 BUT_ONLY
 
 COPY ~RR/RR_CORE/SPELLS/RR#BBL01.SPL~ override                // Blade new song part 1
-     ~RR/RR_CORE/SPELLS/RR#BBL02.SPL~ override                // Blade new song part 2
      ~RR/RR_CORE/BAM/RR#WDIS.BAM~     override                // Weapons Display icon
+
+COPY ~RR/RR_CORE/SPELLS/RR#BBL02.SPL~ override                // Blade new song part 2
+  PATCH_IF enhanced_edition BEGIN 
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END  
 
 COPY ~RR/RR_CORE/SPELLS/RR#WDIS.EFF~  override                // Weapons Display immunity (prevents Undead, Demons, Golems... from being affected)
   SAY 0x1C @84 // Unaffected by the Weapons Display
@@ -739,7 +757,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#WDIS.SPL~  override                // Weapons Display
       match_parameter1 = 32087 // Spin already active.
       parameter1 = RESOLVE_STR_REF (@10009) // Spin already active.
   END
-
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race/general; use 321s to prevent stacking on EEs, not 206
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END 
+  
 OUTER_SPRINT desc @30
 LAF set_kit_description STR_VAR kit = blade desc END
 
@@ -805,6 +829,20 @@ COPY ~RR/RR_CORE/SPELLS/RR#BSK00.SPL~ override                // Revised Skald s
         string
     END
   END
+  PATCH_IF enhanced_edition BEGIN 
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END 
+    PATCH_IF (confusion_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 128 opcode = 328 parameter2 = confusion_immunity special = 1 END // clone immunity into spell state
+    END 
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END  
 
 OUTER_SPRINT desc @33
 LAF set_kit_description STR_VAR kit = skald desc END
@@ -822,6 +860,9 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJSIT.SPL~ override                // New innate trai
     STR_VAR
       string = "confused"
   END
+  PATCH_IF (confusion_immunity >= 0) BEGIN
+    LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 128 opcode = 328 parameter2 = confusion_immunity special = 1 END // clone immunity into spell state
+  END 
 
 COPY_EXISTING ~CLABBA03.2DA~ override                         // Jester kit ability table
   LPF set_clab_2da_entries
@@ -855,6 +896,15 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS00.SPL~ override                // Revised Jester 
       match_parameter1 = 17424 // "Bad Luck"
       parameter1 = RESOLVE_STR_REF (@81) // Distracted
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race/general; use 321s to prevent stacking on EEs, not 206    
+    PATCH_IF (confusion_immunity > 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
+    END
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
+    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
+  END 
 
 LAM load_RR#FSCNT_var
 
@@ -953,25 +1003,6 @@ ACTION_IF FILE_EXISTS_IN_GAME spcl920.spl BEGIN
         STR_VAR
           resource
       END
-    END
-  BUT_ONLY
-END
-
-
-// Use proper bard song stacking prevention on IWD:EE
-// Also deafened characters should not benefit from bard songs on IWD:EE
-// Lastly, all bard songs should always break invisibility on IWD:EE
-
-ACTION_IF game_is_iwdee BEGIN
-  COPY_EXISTING ~RR#BSK00.SPL~ override // Skald's regular song
-                ~RR#BJS00.SPL~ override // Jester's regular song
-    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // stacking prevention
-    LPF ADD_SPELL_EFFECT INT_VAR insert_point = 1 opcode = 324 target = 2 duration = 1 parameter2 = 66 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // deafness targeting
-    LPF ADD_ITEM_EQEFFECT
-      INT_VAR
-        opcode = 136
-        target = 1
-        timing = 1
     END
   BUT_ONLY
 END
