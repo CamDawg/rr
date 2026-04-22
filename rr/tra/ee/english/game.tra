@@ -629,10 +629,7 @@ Weight: 3~
 
 STATISTICS:
 
-Combat abilities:
-– 10% of all hits deal an extra 1d3 points of electrical damage and cause the target to suffer -2 AC vs. missiles during the next 3 rounds
-
-Damage: +%bow_dam% (missile)
+Damage: +1 (missile)
 Speed Factor: 6
 Proficiency Type: Shortbow
 Type: Two-handed

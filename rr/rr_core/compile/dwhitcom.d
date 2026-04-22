@@ -1,0 +1,1 @@
+ADD_TRANS_ACTION dwhitcom BEGIN 10 END BEGIN END ~GiveItemCreate("RR#FDART",LastTalkedToBy,1,0,0)~

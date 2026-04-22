@@ -8,7 +8,6 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
   INCLUDE ~rr/lib/game_checks.tpa~                                    // cam's game_is variables
   INCLUDE ~rr/lib/rr#afix.tph~                                        // Include the Rogue Rebalancing Assorted Fixes macro
   INCLUDE ~rr/lib/rr#bg1v.tpa~                                        // Include the BG1 variables macro (used for proper Tutu and BGT compatibility)
-  INCLUDE ~rr/lib/cd_clone_spell_bulk_first.tpa~                      // Include my custom "Spell to Innate" function
   INCLUDE ~rr/lib/fl#bg1pal.tpa~                                      // BG1 Platform-Abstraction Library
   INCLUDE "rr/lib/lib.tpa"
   
@@ -114,7 +113,6 @@ ACTION_IF !VARIABLE_IS_SET rr_always BEGIN
 END 
 
 ACTION_IF (COMPONENT_NUMBER != 0) BEGIN // used on everything but component zero, so
-  PRINT ~reached afix~
   LAUNCH_ACTION_MACRO ~RR#AFIX~
 END   
 

@@ -59,6 +59,7 @@ INCLUDE ~rr/lib/tob2soa.tph~
 ACTION_IF FILE_EXISTS_IN_GAME ~CDDETEVL.pro~ AND
           game_includes_soa
 BEGIN
+
   COPY ~music/mxaerie.mus~ ~music/mxkalah.mus~                                                   // Kalah's theme (used in Arledrian's quest)
     REPLACE_TEXTUALLY ~AERIE~ ~KALAH~
   COPY ~music/mxaerie.mus~ ~music/mxkhali.mus~                                                   // Khalid's theme (used in the CoC encounter)
@@ -270,39 +271,9 @@ END
 */
 
 
-// Clone several spells and make them innate in order to avoid Cowled Wizard magic license warning and item caster level issues
-// cd_clone_spell_bulk_first.tpa loaded in ALWAYS block
-ACTION_CLEAR_ARRAY cd_clone_spell_array // do this once
-
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI201 destination = ~RR#WI201~ RET_ARRAY cd_clone_spell_array END // Clone Blur (used by Rogue's Cowl)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI208 destination = ~RR#WI208~ RET_ARRAY cd_clone_spell_array END // Clone Know Alignment (used by Keeper of the Law)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI212 destination = ~RR#WI212~ RET_ARRAY cd_clone_spell_array END // Clone Mirror Image (used by Rogue's Cowl)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPDR401 destination = ~RR#WI405~ RET_ARRAY cd_clone_spell_array END // Clone Improved Invisibility (used by Rogue's Ward)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI406 destination = ~RR#WI406~ RET_ARRAY cd_clone_spell_array END // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI408 destination = ~RR#WI408~ RET_ARRAY cd_clone_spell_array END // Clone Stoneskin (used by the Barrier Amulet)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI507 destination = ~RR#WI507~ RET_ARRAY cd_clone_spell_array END // Clone Hold Monster (used by the Hold Fast longsword)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI523 destination = ~RR#WI523~ RET_ARRAY cd_clone_spell_array END // Clone Sunfire (used by Blazing Glory)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI721 destination = ~RR#WI721~ RET_ARRAY cd_clone_spell_array END // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
-
-COPY_EXISTING ~RR#WI201.spl~ ~override~ // Clone Blur (used by Rogue's Cowl)
-              ~RR#WI208.spl~ ~override~ // Clone Know Alignment (used by Keeper of the Law)
-              ~RR#WI212.spl~ ~override~ // Clone Mirror Image (used by Rogue's Cowl)
-              ~RR#WI405.spl~ ~override~ // Clone Improved Invisibility (used by Rogue's Ward)
-              ~RR#WI406.spl~ ~override~ // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
-              ~RR#WI408.spl~ ~override~ // Clone Stoneskin (used by the Barrier Amulet)
-              ~RR#WI507.spl~ ~override~ // Clone Hold Monster (used by the Hold Fast longsword)
-              ~RR#WI523.spl~ ~override~ // Clone Sunfire (used by Blazing Glory)
-              ~RR#WI721.spl~ ~override~ // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
-  PATCH_IF !enhanced_edition BEGIN // EEs can use the the cast-instantly-at-level mode that's not in the originals
-    LPF ALTER_SPELL_HEADER INT_VAR speed = 1 END
-  END  
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // force visible
-
-INCLUDE ~rr/lib/cd_clone_spell_bulk_last.tpa~
-
 // New thievery related spells
 
-COPY    ~RR/RR_CORE/SPELLS/RR#FEAR.SPL~   ~override~                               // Custom Fear spell, used by Revised Thievery for familiar panicking
+COPY ~RR/RR_CORE/SPELLS/RR#FEAR.SPL~   ~override~                               // Custom Fear spell, used by Revised Thievery for familiar panicking
   PATCH_IF (panic_immunity >= 0) BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 24 opcode = 324 parameter1 = panic_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
   END 

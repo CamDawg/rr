@@ -1419,7 +1419,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL02.SPL~ override                      // Enthralli
   END
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race; use 318s to prevent confusion-immune creature 
     PATCH_IF (confusion_immunity > 0) BEGIN
-      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
     END      
     LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
   END  
@@ -1858,6 +1858,37 @@ INCLUDE ~RR/LIB/RR#SSOB.TPH~                                        // Include t
 
 INCLUDE "rr/lib/ds.tph"                                             // Detectable Spells
 
+// Clone several spells and make them innate in order to avoid Cowled Wizard magic license warning and item caster level issues
+// clone after DS so that they inherit whatever stats/profs get set by the originals
+INCLUDE ~rr/lib/cd_clone_spell_bulk_first.tpa~ // Include my custom "Spell to Innate" function
+ACTION_CLEAR_ARRAY cd_clone_spell_array        // do this once
+
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI201 destination = ~RR#WI201~ RET_ARRAY cd_clone_spell_array END // Clone Blur (used by Rogue's Cowl)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI208 destination = ~RR#WI208~ RET_ARRAY cd_clone_spell_array END // Clone Know Alignment (used by Keeper of the Law)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI212 destination = ~RR#WI212~ RET_ARRAY cd_clone_spell_array END // Clone Mirror Image (used by Rogue's Cowl)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPDR401 destination = ~RR#WI405~ RET_ARRAY cd_clone_spell_array END // Clone Improved Invisibility (used by Rogue's Ward)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI406 destination = ~RR#WI406~ RET_ARRAY cd_clone_spell_array END // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI408 destination = ~RR#WI408~ RET_ARRAY cd_clone_spell_array END // Clone Stoneskin (used by the Barrier Amulet)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI507 destination = ~RR#WI507~ RET_ARRAY cd_clone_spell_array END // Clone Hold Monster (used by the Hold Fast longsword)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI523 destination = ~RR#WI523~ RET_ARRAY cd_clone_spell_array END // Clone Sunfire (used by Blazing Glory)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI721 destination = ~RR#WI721~ RET_ARRAY cd_clone_spell_array END // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
+
+COPY_EXISTING ~RR#WI201.spl~ ~override~ // Clone Blur (used by Rogue's Cowl)
+              ~RR#WI208.spl~ ~override~ // Clone Know Alignment (used by Keeper of the Law)
+              ~RR#WI212.spl~ ~override~ // Clone Mirror Image (used by Rogue's Cowl)
+              ~RR#WI405.spl~ ~override~ // Clone Improved Invisibility (used by Rogue's Ward)
+              ~RR#WI406.spl~ ~override~ // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
+              ~RR#WI408.spl~ ~override~ // Clone Stoneskin (used by the Barrier Amulet)
+              ~RR#WI507.spl~ ~override~ // Clone Hold Monster (used by the Hold Fast longsword)
+              ~RR#WI523.spl~ ~override~ // Clone Sunfire (used by Blazing Glory)
+              ~RR#WI721.spl~ ~override~ // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
+  PATCH_IF !enhanced_edition BEGIN // EEs can use the the cast-instantly-at-level mode that's not in the originals
+    LPF ALTER_SPELL_HEADER INT_VAR speed = 1 END
+  END  
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // force visible
+
+INCLUDE ~rr/lib/cd_clone_spell_bulk_last.tpa~
+
 ACTION_IF NOT MOD_IS_INSTALLED ITEM_REV.TP2 0 AND !game_is_iwdee BEGIN
   COPY ~RR/RR_CORE/BAM/RR#CKIEL.BAM~ override                         // Kiel's Buckler description icon (CSHLD20.BAM is missing in BG2)
 
@@ -1955,7 +1986,6 @@ COPY ~RR/RR_CORE/ITEMS/RR#GUARA.ITM~  override               // The Guardian
   SAY NAME2 @24 SAY DESC @25
   WRITE_ASCIIE 0x22 ~%anim_d3%~  #2 // Scale Shield
   WRITE_ASCIIE 0x44 ~%anim_d3g%~ #8 // BG2 Medium Shield ground icon
-  LPF DELETE_EFFECT INT_VAR match_opcode = 7 match_parameter2 = 36 END
 	PATCH_IF 1pp_palette BEGIN
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 37 parameter1 = 146 END
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 33 parameter1 = 134 END
@@ -1967,7 +1997,6 @@ COPY ~RR/RR_CORE/ITEMS/RR#GUARB.ITM~  override               // The Guardian +2 
   SAY NAME2 @5002 SAY DESC @5003
   WRITE_ASCIIE 0x22 ~%anim_d3%~  #2 // Scale Shield
   WRITE_ASCIIE 0x44 ~%anim_d3g%~ #8 // BG2 Medium Shield ground icon
-	LPF DELETE_EFFECT INT_VAR match_opcode = 7 match_parameter2 = 36 END
 	PATCH_IF 1pp_palette BEGIN
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 37 parameter1 = 146 END
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 33 parameter1 = 134 END
@@ -1979,7 +2008,6 @@ COPY ~RR/RR_CORE/ITEMS/RR#GUARC.ITM~  override               // The Guardian +3 
   SAY NAME2 @5004 SAY DESC @5005
   WRITE_ASCIIE 0x22 ~%anim_d3%~  #2 // Scale Shield
   WRITE_ASCIIE 0x44 ~%anim_d3g%~ #8 // BG2 Medium Shield ground icon
-	LPF DELETE_EFFECT INT_VAR match_opcode = 7 match_parameter2 = 36 END
 	PATCH_IF 1pp_palette BEGIN
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 37 parameter1 = 146 END
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 match_parameter1 = 54 match_parameter2 = 33 parameter1 = 134 END
@@ -1999,10 +2027,26 @@ COPY ~RR/RR_CORE/ITEMS/RR#SHM01.ITM~  override               // Lesser Shambler'
       match_parameter1 = 4742 // Spell Ineffective
       parameter1 = RESOLVE_STR_REF (@10015) // Spell Ineffective
   END
-  LPF DELETE_ITEM_EQEFFECT INT_VAR opcode_to_delete = 267 END
   PATCH_FOR_EACH string IN "devour brain" "confused" "panic" "charmed" "held" "stunned" "diseased" BEGIN
     LPF protection_from_string STR_VAR string END
   END
+  PATCH_IF enhanced_edition BEGIN 
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END 
+    PATCH_IF (charm_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 END // clone immunity into spell state
+    END 
+    PATCH_IF (sleep_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 39 opcode = 328 parameter2 = sleep_immunity special = 1 END // clone immunity into spell state
+    END 
+    PATCH_IF (confusion_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 128 opcode = 328 parameter2 = confusion_immunity special = 1 END // clone immunity into spell state
+    END 
+  END  
 
 COPY ~RR/RR_CORE/SPELLS/RR#SHM01.EFF~ override               // Lesser Shambler's summoning EFF
      ~RR/RR_CORE/SPELLS/RR#SHM02.EFF~ override               // Shambling Mound's summoning EFF
@@ -2020,6 +2064,12 @@ COPY ~RR/RR_CORE/SPELLS/RR#SMENT.SPL~ override               // Shambler entangl
       match_parameter1 = 334 // Entangled
       parameter1 = RESOLVE_STR_REF (@10008) // Entangled
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude targets; use 321 to stack better
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 END // class checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
+  END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#SHM.SPL~   override               // Shambler summoning spell
   SAY NAME1 @10011 SAY UNIDENTIFIED_DESC @10011
@@ -2101,6 +2151,11 @@ COPY ~RR/RR_CORE/ITEMS/RR#FDART.ITM~ override
       match_parameter1 = 335 // Slowed
       parameter1 = RESOLVE_STR_REF (@10017) // Slowed
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    PATCH_IF (slow_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 40 opcode = 324 parameter1 = slow_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR resource = EVAL ~%SOURCE_RES%~ END
+    END     
+  END 
 
 COPY ~RR/RR_CORE/BAM/RR#ACUMN.BAM~   override                     // Dagger of Acumen (for Aran Linvail)
 
@@ -2183,8 +2238,25 @@ ACTION_IF GAME_INCLUDES ~soa~ BEGIN
 
   COPY_EXISTING ~BMTHIEF.DLG~ override
                 ~ARLED.DLG~ override
-    WRITE_LONG 0x30 0
-  BUT_ONLY
+    READ_LONG  0x0c offset_state ELSE 0
+    PATCH_IF (offset_state = 0x30) BEGIN // adds pause field to older dlg formats
+      PATCH_FOR_EACH offset IN 0x18 0x20 0x28 BEGIN // loop through state, response trigger offsets
+        READ_LONG offset loop_off
+        READ_LONG (offset + 0x04) loop_num
+        FOR (index = 0 ; index < loop_num ; ++index) BEGIN
+          WRITE_LONG (loop_off + (index * 0x08)) (THIS + 0x04)
+        END
+      END
+      // push all other offsets back 0x04
+      PATCH_FOR_EACH offset IN 0x0c 0x14 0x18 0x20 0x28 BEGIN
+        WRITE_LONG offset (THIS + 0x04)
+      END
+      INSERT_BYTES 0x30 0x04
+    END ELSE
+    PATCH_IF (offset_state = 0x34) BEGIN // otherwise just sets to pause
+      WRITE_LONG 0x30 0
+    END
+    BUT_ONLY
 
   // AR0306 script fix to prevent the player from acquiring multiple SSoB items
 
@@ -2196,11 +2268,7 @@ ACTION_IF GAME_INCLUDES ~soa~ BEGIN
     END
   BUT_ONLY
 
-  ACTION_IF !FILE_EXISTS_IN_GAME ~%areascript%.bcs~ BEGIN
-    COMPILE ~RR/RR_CORE/COMPILE/AR0306.BAF~
-  END ELSE BEGIN
-    EXTEND_BOTTOM ~%areascript%.bcs~ ~RR/RR_CORE/COMPILE/AR0306.BAF~
-  END
+  EXTEND_BOTTOM ~%areascript%.bcs~ ~RR/RR_CORE/COMPILE/AR0306.BAF~
 
   // Replace Mae'Var's SSoB with a generic Short Sword +3 (only in case he's wielding the SSoB)
 
@@ -2406,6 +2474,10 @@ COPY ~RR/RR_CORE/SPELLS/RR#PLAG1.SPL~ override                // Filthy Fever di
       match_parameter1 = 39752 // Stricken by a foul disease
       parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
 
 COPY ~RR/RR_CORE/SPELLS/RR#PLAG2.EFF~ override                // Devil Chills immunity effect (applies to Undead, Constructs, Slimes and Elementals)
   SAY 0x1C @87 // Unaffected by Disease
@@ -2420,6 +2492,10 @@ COPY ~RR/RR_CORE/SPELLS/RR#PLAG2.SPL~ override                // Devil Chills di
       match_parameter1 = 39752 // Stricken by a foul disease
       parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
 
 COPY ~RR/RR_CORE/SPELLS/RR#PLAG3.EFF~ override                // Mummy Rot immunity effect (applies to Undead, Constructs, Slimes and Elementals)
   SAY 0x1C @87 // Unaffected by Disease
@@ -2434,6 +2510,10 @@ COPY ~RR/RR_CORE/SPELLS/RR#PLAG3.SPL~ override                // Mummy Rot disea
       match_parameter1 = 39752 // Stricken by a foul disease
       parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
 
 
 
@@ -2501,6 +2581,16 @@ COPY ~RR/RR_CORE/ITEMS/RR#HEL01.ITM~ override
   SAY NAME1 @10002 SAY UNIDENTIFIED_DESC @10003
   SAY NAME2 @138 SAY DESC @139
 
+// add tooltips for sapphire
+OUTER_SPRINT tool ~rr#hel01~
+ACTION_FOR_EACH spell IN sppr205 spwi207 sppr309 BEGIN
+  COPY_EXISTING ~%spell%.spl~ ~override~
+    READ_LONG 0x08 str // name
+    SPRINT ~tool~ ~%tool% %str%~
+    BUT_ONLY
+END   
+APPEND ~tooltip.2da~ ~%tool%~
+
 // Cowl of Acuity
 
 COPY ~RR/RR_CORE/BAM/RR#HEL02.BAM~   override
@@ -2508,7 +2598,6 @@ COPY ~RR/RR_CORE/BAM/RR#HEL02.BAM~   override
 COPY ~RR/RR_CORE/ITEMS/RR#HEL02.ITM~ override
   SAY NAME1 @10004 SAY UNIDENTIFIED_DESC @10005
   SAY NAME2 @140 SAY DESC @141
-  LPF DELETE_ITEM_EQEFFECT INT_VAR opcode_to_delete = 267 END
   LPF protection_from_string STR_VAR string = "blinded" END
   LPF ALTER_EFFECT
     INT_VAR
@@ -2526,9 +2615,21 @@ COPY ~RR/RR_CORE/BAM/RR#CGREA.BAM~   override                // Greagan's Harp d
 
 ACTION_IF !game_is_iwdee BEGIN // not on IWD:EE
 
+  COPY_EXISTING ~%tutu_var%misc2p.itm~ ~override~ // grab existing unidentifed strings
+    READ_LONG 0x08 name READ_LONG 0x50 desc
+    BUT_ONLY
+
   COPY ~RR/RR_CORE/ITEMS/rr#gharp.ITM~ ~override/%tutu_var%MISC2P.ITM~     // rr's Greagan's Harp
-    SAY NAME1 #38789 SAY 0x50 #39668
+    WRITE_LONG 0x08 name WRITE_LONG 0x50 desc
     SAY NAME2 @142 SAY DESC @143
+    PATCH_IF enhanced_edition BEGIN // 
+      LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 STR_VAR match_resource = cdelfcm0 resource = EVAL ~%SOURCE_RES%~ END // any remaining race checks
+      LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 END // convert two effs for (half-)elven restance, delete the rest
+      PATCH_IF (charm_immunity >= 0) BEGIN
+        LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 5 opcode = 324 parameter1 = charm_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+      END     
+    END  
+      
     
 END // not on IWD:EE
 
@@ -2549,6 +2650,9 @@ COPY ~RR/RR_CORE/ITEMS/RR#HRP01.ITM~    override
       match_parameter1 = 18863 // "Enchantment Dispelled"
       parameter1 = RESOLVE_STR_REF (@80) // Confusion Effect Dispelled
   END
+  PATCH_IF FILE_EXISTS_IN_GAME ~#curecon.spl~ BEGIN // eefp catch-all confusion cure
+    LPF ALTER_EFFECT INT_VAR match_opcode = 242 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curecon~ END   
+  END 
 
 
 // The Weary Cudgel (Club +1)
@@ -2564,6 +2668,10 @@ COPY ~RR/RR_CORE/ITEMS/RR#WEAR.SPL~    override                                 
       match_parameter1 = 61410 // "Fatigued"
       parameter1 = RESOLVE_STR_REF (@712) // Fatigue accumulation
   END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END   
 
 COPY ~RR/RR_CORE/ITEMS/RR#WEAR.EFF~  override               // Immunity to the custom fatigue causing spell (used for undead, constructs, slimes and elementals)
 
@@ -2632,20 +2740,6 @@ COPY ~RR/RR_CORE/ITEMS/RR#BOW06.ITM~ override
       match_parameter1 = 8325 // Magnetized
       parameter1 = RESOLVE_STR_REF (@10016) // Magnetized
   END
-
-ACTION_IF enhanced_edition BEGIN 
-
-  // allow new shortbows to be usable by shaman on EEs
-  COPY_EXISTING ~rr#bow02.itm~ ~override~
-                ~rr#bow03.itm~ ~override~
-                ~rr#bow04.itm~ ~override~
-                ~rr#bow05.itm~ ~override~
-                ~rr#bow06.itm~ ~override~
-    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
-    BUT_ONLY IF_EXISTS
-    
-END 
 
 
 // Darkveil (thieves' hood which grants immunity to gaze attacks)
@@ -2859,142 +2953,62 @@ BEGIN
   END
 END
 
-
-// Add Composite Short Bows to BG2 stores which carry regular Short Bows (BG2/ToB only)
-
-ACTION_FOR_EACH ~file~ IN
-                ~AMBAR01~                                                                 // The Zephir (Amkethran Innkeeper)
-                ~BERNARD~                                                                 // Copper Coronet
-                ~BERNARD2~                                                                // Copper Coronet
-                ~BSHOP01~                                                                 // Cutpurse (Bridge District halfling fence)
-                ~BSHOP02~                                                                 // Merchant (Bridge District Female Elf Fence)
-                ~DMARK~                                                                   // Fovem (Docks District fence)
-                ~DSHOP01~                                                                 // Ikert (Docks District merchant)
-                ~GORCH~                                                                   // Gorch (Mae'Var's Guildhall fence)
-                ~JAYES~                                                                   // Jayes (Waukeen's Promenade fence)
-                ~MERCHANT~                                                                // Bel Dalemark (Waukeen's Promenade merchant)
-                ~RIBALD~                                                                  // Adventurers' Mart (regular stock)
-                ~SARBAR01~                                                                // Saradush Innkeeper
-                ~SHOP01~                                                                  // Mira (Waukeen's Promenade merchant)
-                ~SHOP05~                                                                  // Perter (Waukeen's Promenade fletcher)
-                ~SHOP06~                                                                  // Hes (Waukeen's Promenade merchant)
-                ~SHOP07~                                                                  // Storekeep (Waukeen's Promenade merchant)
-                ~SHTHSTOR~                                                                // Rettel the Fence (Shadow Thief Guildhall)
-                ~SLSHOP01~                                                                // Black Market Thief (Slums Halfling)
-                ~SLSHOP02~                                                                // Black Market Thief (Slums female Half-Orc)
-                ~TRCAR04~                                                                 // Trademeet merchant
-                ~TRMER01~                                                                 // Trademeet merchant
-                ~UDDROW23~                                                                // Drow Merchant (Ust Natha)
-                ~UHMER01~                                                                 // Umar Hills Merchant
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        ADD_STORE_ITEM ~RR#BOW02~ AFTER   ~BOW05~ #0 #0 #0 ~IDENTIFIED~ #1                // Adds 1x Composite Short Bow
-      // ===============================================================================
-      END
-    BUT_ONLY
+// rather than the individual store patches that were here before, add composite shortbows
+// to any shop that carries shortbows
+// shops that already have 
+COPY_EXISTING_REGEXP GLOB ~^.+\.sto$~ ~override~
+  READ_LONG 0x08 type
+  PATCH_IF type != 5 BEGIN // not a bag
+    SET sb0 = 0
+    SET sb1 = 0
+    SET sb2 = 0
+    SET sb3 = 0
+    READ_LONG 0x34 sale_off
+    READ_LONG 0x38 sale_num
+    FOR (index = 0 ; index < sale_num ; ++index) BEGIN 
+      READ_ASCII (sale_off + 0x00 + (index * 0x1c)) item
+      // is short bows found, set vars
+      PATCH_IF (("%item%" STRING_COMPARE_REGEXP "^%tutu_var%[Bb][Oo][Ww]05$" = 0) AND (sb0 = 0)) BEGIN // short bow +0 
+        SET sb0 = 1
+      END ELSE  
+      PATCH_IF (("%item%" STRING_COMPARE_REGEXP "^%tutu_var%[Bb][Oo][Ww]06$" = 0) AND (sb1 = 0)) BEGIN // short bow +1 
+        SET sb1 = 1
+      END ELSE  
+      PATCH_IF (("%item%" STRING_COMPARE_REGEXP "^%tutu_var%[Bb][Oo][Ww]18$" = 0) AND (sb2 = 0)) BEGIN // short bow +2
+        SET sb2 = 1
+      END ELSE  
+      PATCH_IF (("%item%" STRING_COMPARE_REGEXP "^%tutu_var%[Bb][Oo][Ww]26$" = 0) AND (sb3 = 0)) BEGIN // short bow +3 
+        SET sb3 = 1
+      END ELSE
+      // if comp short bows already added in a bespoke patch above, skip adding
+      PATCH_IF ("%item%" STRING_COMPARE_REGEXP "^[Rr][Rr]#[Bb][Oo][Ww]02$" = 0) BEGIN // comp short bow +0 
+        SET sb0 = 2
+      END ELSE    
+      PATCH_IF ("%item%" STRING_COMPARE_REGEXP "^[Rr][Rr]#[Bb][Oo][Ww]03$" = 0) BEGIN // comp short bow +1 
+        SET sb1 = 2
+      END ELSE    
+      PATCH_IF ("%item%" STRING_COMPARE_REGEXP "^[Rr][Rr]#[Bb][Oo][Ww]04$" = 0) BEGIN // comp short bow +2 
+        SET sb2 = 2
+      END ELSE    
+      PATCH_IF ("%item%" STRING_COMPARE_REGEXP "^[Rr][Rr]#[Bb][Oo][Ww]05$" = 0) BEGIN // comp short bow +3 
+        SET sb3 = 2
+      END      
+    END 
+    PATCH_IF (sb0 = 1) BEGIN // if shortbow +0, add composite shortbow +0
+      LPF ADD_STORE_ITEM_EX INT_VAR stack = 1 STR_VAR item_name = ~RR#BOW02~ position = EVAL "AFTER %tutu_var%BOW05" flags = identified END
+    END  
+    PATCH_IF (sb1 = 1) BEGIN // if shortbow +1, add composite shortbow +1
+      LPF ADD_STORE_ITEM_EX INT_VAR stack = 1 STR_VAR item_name = ~RR#BOW03~ position = EVAL "AFTER RR#BOW02 %tutu_var%BOW06" flags = identified END
+    END  
+    PATCH_IF (sb2 = 1) BEGIN // if shortbow +2, add composite shortbow +2
+      LPF ADD_STORE_ITEM_EX INT_VAR stack = 1 STR_VAR item_name = ~RR#BOW04~ position = EVAL "AFTER RR#BOW03 RR#BOW02 %tutu_var%BOW18" flags = identified END
+    END  
+    PATCH_IF (sb3 = 1) BEGIN // if shortbow +3, add composite shortbow +3
+      LPF ADD_STORE_ITEM_EX INT_VAR stack = 1 STR_VAR item_name = ~RR#BOW05~ position = EVAL "AFTER RR#BOW04 RR#BOW03 RR#BOW02 %tutu_var%BOW26" flags = identified END
+    END  
   END
-END
-
-
-// Add Composite Short Bows to BG1 stores which carry regular Short Bows (Tutu/BGT only)
-// Note: this needs to be a separate block in order to prevent %tutu_var% from messing up prerequisite item names in BG2 stores
-
-ACTION_FOR_EACH ~file~ IN
-                ~%tutu_var%FRIEND~                                                        // The Friendly Arm
-                ~%tutu_var%INN2616~                                                       // Candlekeep Inn
-                ~%tutu_var%INN3304~                                                       // Jovial Juggler
-                ~%tutu_var%STO4803~                                                       // Nashkel Store
-                ~%tutu_var%STO4909~                                                       // Carnival Shop
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        ADD_STORE_ITEM ~RR#BOW02~ AFTER   ~%tutu_var%BOW05~ #0 #0 #0 ~IDENTIFIED~ #1      // Adds 1x Composite Short Bow
-      // ===============================================================================
-      END
-    BUT_ONLY
-  END
-END
-
-
-// Add Composite Short Bows +1 to BG2 stores which carry regular Short Bows +1 (BG2 and ToB only)
-
-ACTION_FOR_EACH ~file~ IN
-                ~AMSMUG01~                                                                // Amkethran Smugglers
-                ~AMSMUG02~                                                                // Amkethran Smugglers
-                ~ARLED~                                                                   // Shadow Thief Fence (Arledrian)
-                ~BSHOP01~                                                                 // Cutpurse (Bridge District halfling fence)
-                ~PPSTOR01~                                                                // Brynlaw merchant
-                ~RIBALD~                                                                  // Adventurers' Mart (regular stock)
-                ~SARBAR01~                                                                // Saradush Innkeeper
-                ~TRCAR04~                                                                 // Trademeet merchant
-                ~TRGENI01~                                                                // Khan Zahraa (Trademeet Genie)
-                ~TRMER02~                                                                 // Trademeet merchant
-                ~TRMER04~                                                                 // Trademeet blacksmith
-                ~TRTHF02~                                                                 // Kich (Trademeet fence)
-                ~UDDUER02~                                                                // Duergar Merchant (Underdark)
-                ~UDSVIR05~                                                                // Svirfneblin General Store (Underdark)
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        ADD_STORE_ITEM ~RR#BOW03~ AFTER   ~BOW06~ #0 #0 #0 ~IDENTIFIED~ #1                // Adds 1x Composite Short Bow +1
-      // ===============================================================================
-      END
-    BUT_ONLY
-  END
-END
-
-
-// Add Composite Short Bows +2 to BG2 stores which carry regular Short Bows +2 (BG2 and ToB only)
-
-ACTION_FOR_EACH ~file~ IN
-                ~GORCH~                                                                  // Gorch (Mae'Var's Guildhall fence)
-                ~HGKAR01~                                                                // Karthis al-Hezzar (ToB merchant on the meadow in front of Saradush)
-                ~JAYES~                                                                  // Jayes (Waukeen's Promenade fence)
-                ~RIBALD~                                                                 // Adventurers' Mart (regular stock)
-                ~RIBALD3~                                                                // Adventurers' Mart (special stock)
-                ~SARBAR01~                                                               // Saradush Innkeeper
-                ~SLSHOP01~                                                               // Black Market Thief (Slums Halfling)
-                ~TRMER02~                                                                // Trademeet merchant
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        ADD_STORE_ITEM ~RR#BOW04~ AFTER   ~BOW18~ #0 #0 #0 ~IDENTIFIED~ #1               // Adds 1x Composite Short Bow +2
-      // ===============================================================================
-      END
-    BUT_ONLY
-  END
-END
-
-
-// Add Composite Short Bows +3 to BG2 stores which carry regular Short Bows +3 (BG2 and ToB only)
-
-ACTION_FOR_EACH ~file~ IN
-                ~AMSMUG01~                                                               // Amkethran Smugglers
-                ~AMSMUG02~                                                               // Amkethran Smugglers
-                ~HGKAR01~                                                                // Karthis al-Hezzar (ToB merchant on the meadow in front of Saradush)
-                ~SARBAR01~                                                               // Saradush Innkeeper
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        ADD_STORE_ITEM ~RR#BOW05~ AFTER   ~BOW26~ #0 #0 #0 ~IDENTIFIED~ #1               // Adds 1x Composite Short Bow +3
-      // ===============================================================================
-      END
-    BUT_ONLY
-  END
-END
-
-
+  BUT_ONLY
+  
 // Add a Sap to most fences and oterwise suitable characters (BG2/ToB only)
 
 ACTION_FOR_EACH ~file~ IN
@@ -3011,26 +3025,6 @@ ACTION_FOR_EACH ~file~ IN
                 ~SLSHOP02~                                                              // Black Market Thief (Slums female Half-Orc)
                 ~TRTHF02~                                                               // Kich (Trademeet fence)
                 ~UDDUER02~                                                              // Duergar Merchant (Underdark)
-BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%file%.sto~ BEGIN
-    COPY_EXISTING ~%file%.sto~ override
-      PATCH_IF (%SOURCE_SIZE% > 0x9b) BEGIN
-      // ===============================================================================
-        PATCH_IF NOT FILE_CONTAINS_EVALUATED (~%SOURCE_FILE%~ ~BLUN01~) BEGIN            // if the store has no Clubs for sale
-          ADD_STORE_ITEM ~BLUN01~ FIRST #0 #0 #0 ~IDENTIFIED~ #1                         // Add 1x Club
-        END
-        ADD_STORE_ITEM ~RR#SAP01~ AFTER ~BLUN01~ #0 #0 #0 ~IDENTIFIED~ #1                // Add 1x Sap
-      // ===============================================================================
-      END
-    BUT_ONLY
-  END
-END
-
-
-// Add a Sap to most fences (Tutu/BGT only)
-// Note: this needs to be a separate block in order to prevent %tutu_var% from messing up prerequisite item names in BG2 stores
-
-ACTION_FOR_EACH ~file~ IN
                 ~%tutu_var%INN2616~                                                      // Candlekeep Inn
                 ~_TOSILEN~                                                               // Shop of Silence (Tutu version)
                 ~STOSILEN~                                                               // Shop of Silence (BGT version)
@@ -3332,12 +3326,6 @@ COPY_EXISTING ~kieran2.sto~ ~override~                                          
   ADD_STORE_ITEM ~RR#HEL01~   AFTER   ~OHIOUN02~ #3 #3 #3 ~IDENTIFIED~ #1            // Adds 1x Tri-souled Sapphire
 BUT_ONLY
 
-// Ioun Stones should not protect against critical hits on IWD:EE
-COPY_EXISTING ~rr#hel01.ITM~ ~override~ // Tri-souled Sapphire
-              ~rr#hel04.ITM~ ~override~ // Fragment of Enlightenment
-  WRITE_LONG 0x18 (THIS BOR BIT25) // set the critical hit protection flag
-BUT_ONLY
-
 
 // Sap
 
@@ -3365,12 +3353,7 @@ BUT_ONLY
 
 
 // Returning Frost Dart
-
-COPY_EXISTING ~dwhitcom.dlg~ ~override~ // Whitcomb gives this to the player along with Lysan's other belongings
-  DECOMPILE_AND_PATCH BEGIN
-    REPLACE_TEXTUALLY EXACT_MATCH ~GiveItemCreate("Scrl06",LastTalkedToBy,1,0,0)~ ~GiveItemCreate("Scrl06",LastTalkedToBy,1,0,0) GiveItemCreate("RR#FDART",LastTalkedToBy,1,0,0)~
-  END
-BUT_ONLY
+COMPILE ~rr/rr_core/compile/dwhitcom.d~
 
 
 // Dagger of Acumen
@@ -3465,48 +3448,31 @@ COPY_EXISTING ~emmeric.sto~ ~override~                                          
 BUT_ONLY
 
 
-// RR items should not have description icons on IWD:EE
-ACTION_FOR_EACH ~file~ IN
-                ~RR#BUC01~ // Fading Glory
-                ~RR#BUC02~ // Buckler +1
-                ~RR#BUC03~ // Buckler +2
-                ~RR#BUC04~ // Buckler +3
-                ~RR#SHL01~ // Stalwart Defender
-                ~RR#SHL02~ // Safeguard
-                ~RR#RWARD~ // Rogue's Ward
-                ~RR#GUARA~ // The Guardian +1
-                ~RR#GUARB~ // The Guardian +2
-                ~RR#GUARC~ // The Guardian +3
-                ~RR#HRP01~ // Harp of Descant
-                ~RR#BEL01~ // Masterbelt
-                ~RR#HEL01~ // Tri-souled Sapphire
-                ~RR#HEL02~ // Cowl of Acuity
-                ~RR#HEL03~ // Darkveil
-                ~RR#HEL04~ // Fragment of Enlightenment
-                ~RR#SAP01~ // Sap
-                 ~RR#STON~ // Stonesmasher
-                 ~RR#WEAR~ // The Weary Cudgel
-                ~RR#FDART~ // Returning Frost Dart
-                ~RR#ACUMN~ // Dagger of Acumen
-                 ~RR#PLAG~ // Plaguebearer
-                 ~RR#SILV~ // Silverblaze
-                 ~RR#TROL~ // Trollmelter
-                 ~RR#CATC~ // Black Cat's Claw
-                 ~RR#KEEP~ // Keeper of the Law
-                ~RR#BOW02~ // Composite Short Bow
-                ~RR#BOW03~ // Composite Short Bow +1
-                ~RR#BOW04~ // Composite Short Bow +2
-                ~RR#BOW05~ // Composite Short Bow +3
-                ~RR#BOW06~ // Sparkburst
-BEGIN
-  COPY_EXISTING ~%file%.itm~ override
-    WRITE_ASCII 0x58 ~~ #8 // description icon
-  BUT_ONLY
-END
-
-
 
 END                                                                            // ends IWD:EE check
+
+ACTION_IF enhanced_edition BEGIN 
+
+  // allow new shortbows to be usable by shaman on EEs
+  COPY_EXISTING ~rr#bow02.itm~ ~override~
+                ~rr#bow03.itm~ ~override~
+                ~rr#bow04.itm~ ~override~
+                ~rr#bow05.itm~ ~override~
+                ~rr#bow06.itm~ ~override~
+    WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+    BUT_ONLY IF_EXISTS 
+
+  // spells which cast spells should do so with op 146, mode 2 (cast instantly at level)
+  COPY_EXISTING ~rr#hel01.itm~ ~override~ // tri-souled sapphire: invis purge, find traps 
+                ~rr#keep.itm~  ~override~ // keeper of the law: know alignment clone
+                ~rr#rward.itm~ ~override~ // rogue's ward: imp invis clone
+                ~rr#shl02.itm~ ~override~ // safeguard: sanctuary
+                ~rr#silv.itm~  ~override~ // silverblaze: npp (yeah you know me)
+    LPF ALTER_EQEFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+    BUT_ONLY IF_EXISTS
+    
+END 
 
 
 ///////////////////////////////////////////////////////////////////////
