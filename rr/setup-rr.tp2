@@ -5079,8 +5079,25 @@ END                                                                 // Ends chec
 
 COPY_EXISTING ARNWAR08.DLG override //Tizzak
               BOOTER02.DLG override //Hostile Booter
-  WRITE_LONG 0x30 0
-BUT_ONLY
+  READ_LONG  0x0c offset_state ELSE 0
+  PATCH_IF (offset_state = 0x30) BEGIN // adds pause field to older dlg formats
+    PATCH_FOR_EACH offset IN 0x18 0x20 0x28 BEGIN // loop through state, response trigger offsets
+      READ_LONG offset loop_off
+      READ_LONG (offset + 0x04) loop_num
+      FOR (index = 0 ; index < loop_num ; ++index) BEGIN
+        WRITE_LONG (loop_off + (index * 0x08)) (THIS + 0x04)
+      END
+    END
+    // push all other offsets back 0x04
+    PATCH_FOR_EACH offset IN 0x0c 0x14 0x18 0x20 0x28 BEGIN
+      WRITE_LONG offset (THIS + 0x04)
+    END
+    INSERT_BYTES 0x30 0x04
+  END ELSE
+  PATCH_IF (offset_state = 0x34) BEGIN // otherwise just sets to pause
+    WRITE_LONG 0x30 0
+  END
+  BUT_ONLY
 
 
 
