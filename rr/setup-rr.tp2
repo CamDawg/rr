@@ -2527,6 +2527,14 @@ COPY ~RR/RR_CORE/BAM/RR#KEEP.BAM~    override
 COPY ~RR/RR_CORE/ITEMS/RR#KEEP.ITM~  override
   SAY NAME1 @10018 SAY UNIDENTIFIED_DESC @10019
   SAY NAME2 @126 SAY DESC @127
+  
+// add tooltips for Keeper of the Law
+OUTER_SPRINT tool ~rr#keep 15529~
+COPY_EXISTING ~sppr209.spl~ ~override~
+  READ_LONG 0x08 str // name
+  SPRINT ~tool~ ~%tool% %str%~
+  BUT_ONLY
+APPEND ~tooltip.2da~ ~%tool% -1~
 
 
 // Cat's Claw (Ninja-To +2)
@@ -3491,12 +3499,17 @@ COPY ~RR/RR_UPGR/ITEMS/RR#BUC11.ITM~  override               // Blazing Glory (F
 
 COPY ~RR/RR_UPGR/BAM/RR#BUC11.BAM~    override               // Blazing Glory icon
      ~RR/RR_UPGR/SPELLS/RR#BUC11.SPL~ override               // Blazing Glory anti-undead main spell (affects only undead thanks to EFF targeting)
-     ~RR/RR_UPGR/SPELLS/RR#BUC1G.EFF~ override               // Deals 2d4 points of dire damage
+     ~RR/RR_UPGR/SPELLS/RR#BUC1G.EFF~ override               // Deals 2d4 points of fire damage
      ~RR/RR_UPGR/SPELLS/RR#BUC1H.EFF~ override               // Blinds target for 24 seconds
      ~RR/RR_UPGR/SPELLS/RR#BUC1I.EFF~ override               // Displays the "Blinded" icon for 24 seconds
 
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~ override               // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
-     ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~ override               // Stormcharged Axe stun effect
+
+COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~ override               // Stormcharged Axe stun effect
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END   
 
 COPY ~RR/RR_UPGR/ITEMS/RR#SCAX2.ITM~  override               // Stormcharged Axe +5
   SAY NAME2 @5006 SAY DESC @5007
@@ -3526,6 +3539,19 @@ COPY ~RR/RR_UPGR/ITEMS/RR#BEL11.ITM~  override               // Masterbelt of Fo
 
 COPY ~RR/RR_UPGR/ITEMS/RR#FDAR2.ITM~  override               // Returning Frost Dart +3
   SAY NAME2 @5012 SAY DESC @5013
+  LPF ALTER_EFFECT
+    INT_VAR
+      check_globals = 0
+      check_headers = 1
+      match_opcode = 139 // display string
+      match_parameter1 = 335 // Slowed
+      parameter1 = RESOLVE_STR_REF (@10017) // Slowed
+  END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    PATCH_IF (slow_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 40 opcode = 324 parameter1 = slow_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR resource = EVAL ~%SOURCE_RES%~ END
+    END     
+  END 
 
 COPY ~RR/RR_UPGR/ITEMS/RR#STON2.ITM~  override               // Stonesmasher +3
   SAY NAME2 @5025 SAY DESC @5026
@@ -3535,6 +3561,14 @@ COPY ~RR/RR_UPGR/ITEMS/RR#STON3.ITM~  override               // Stonesmasher +4
 
 COPY ~RR/RR_UPGR/ITEMS/RR#KEEP2.ITM~  override               // Keeper of the Law +3
   SAY NAME2 @5019 SAY DESC @5020
+  
+// add tooltips for Keeper of the Law
+COPY_EXISTING ~sppr508.spl~ ~override~
+  READ_LONG 0x08 str // name
+  BUT_ONLY
+COPY_EXISTING ~tooltip.2da~ ~override~
+  REPLACE_TEXTUALLY ~^rr#keep\([ %TAB%][0-9]+[ %TAB%][0-9]+[ %TAB%]\)-1~ ~\0%WNL%rr#keep2\1%str%~
+  BUT_ONLY
 
 COPY ~RR/RR_UPGR/ITEMS/RR#WEAR2.ITM~  override               // The Weary Cudgel +3
   SAY NAME2 @5021 SAY DESC @5022
@@ -3575,6 +3609,16 @@ ACTION_IF round_bucklers BEGIN // Checks for 1PP v2.6+ and/or Item Revisions as 
   BUT_ONLY
 END
 
+ACTION_IF enhanced_edition BEGIN 
+
+  // spells which cast spells should do so with op 146, mode 2 (cast instantly at level)
+  COPY_EXISTING ~rr#buc11.itm~ ~override~ // blazing glory: sunfire
+                ~rr#keep2.itm~ ~override~ // keeper of the law: know alignment, chaotic commands
+                ~rr#rwar2.itm~ ~override~ // rogue's ward: imp invis clone
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+    BUT_ONLY IF_EXISTS
+
+END
 
 ///////////////////////////////////////////////////////////////////////
 // Rogue Rebalancing - Revised Thievery
