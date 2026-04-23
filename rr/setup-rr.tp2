@@ -3763,7 +3763,11 @@ COPY ~RR/RR_CORE/SPELLS/RR#PTN36.SPL~ override                             // Po
       match_opcode = 206 // protection from spell
       match_parameter1 = 14094 // "Immunity To Effect"
       parameter1 = RESOLVE_STR_REF (@72) // Consuming multiple potions of the same type does not grant additional benefits
-  END
+  END   
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
+  END 
   /* // No matching effect exists on the spell
   LPF ALTER_EFFECT
     INT_VAR
