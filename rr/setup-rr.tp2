@@ -106,10 +106,6 @@ COPY ~RR/RR_CORE/SPELLS/RR#TAS00.SPL~ override               // Assassin save vs
      ~RR/RR_CORE/BAM/RR#TAS01.BAM~    override               // Assassin Death Attack innate ability icon
      ~RR/RR_CORE/SPELLS/RR#TAS01.EFF~ override               // Death Attack cast secondary spell effect
 
-COPY ~RR/RR_CORE/SPELLS/RR#TAS1B.EFF~ override               // Death Attack protect from secondary spell effect (for Golems, Undead...etc.)
-  SAY 0x1C @86 // Unaffected by Death Attack
-BUT_ONLY
-
 LAM load_RR#DEATA_var
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS01.SPL~ override               // Assassin Death Attack innate ability (coat weapons shell)
@@ -132,8 +128,8 @@ COPY ~RR/RR_CORE/SPELLS/RR#TAS01.SPL~ override               // Assassin Death A
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS1B.SPL~ override               // Death Attack second part (the actual ability)
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // any remaining race checks
     PATCH_IF (death_immunity >= 0) BEGIN
       LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 13 opcode = 324 parameter1 = death_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
     END     
@@ -149,15 +145,11 @@ BUT_ONLY
 
 COPY ~RR/RR_CORE/SPELLS/RR#TAS02.EFF~ override               // Poison Weapon cast secondary spell effect
 
-COPY ~RR/RR_CORE/SPELLS/RR#TAS2B.EFF~ override               // Poison Weapon protect from secondary spell effect (for Golems, Undead...etc.)
-  SAY 0x1C @83 // Unaffected by Poison
-BUT_ONLY
-
 COPY ~RR/RR_CORE/SPELLS/RR#TAS2B.SPL~ override               // Poison Weapon second part (the actual ability)
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
-    LPF CLONE_EFFECT INT_VAR match_opcode = 25 opcode = 318 parameter2 = 77 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END // poison resist >= 100      
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // any remaining race checks
+    LPF CLONE_EFFECT INT_VAR match_opcode = 25 opcode = 324 parameter2 = 77 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END // poison resist >= 100      
     LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
     LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
   END 
@@ -284,12 +276,9 @@ COPY ~RR/RR_CORE/SPELLS/RR#TBH01.SPL~ override                 // RR's revised B
 
 COPY ~RR/RR_CORE/SPELLS/RR#TBH1A.SPL~ override                 // Alchemical Trap subdual damage
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals/mist
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // any remaining race checks
   END 
-
-COPY ~RR/RR_CORE/SPELLS/RR#TBH1A.EFF~ override                 // Alchemical Trap subdual damage immunity
-  SAY 0x1C @90 // Immune to subdual damage
 
 COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.SPL~ override                 // Alchemical Trap secondary effects
   LPF ALTER_EFFECT
@@ -317,18 +306,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.SPL~ override                 // Alchemical Tra
       parameter1 = RESOLVE_STR_REF (@10012) // Blinded
   END  
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 END // class checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 324 parameter2 = 105 END // class checks
   END  
 
-
-COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.EFF~ override                 // Alchemical Trap secondary effects immunity
-     ~RR/RR_CORE/BAM/RR#TRNQ.BAM~     override                 // Bounty Hunter's Paralytic Toxin innate ability icon
+COPY ~RR/RR_CORE/BAM/RR#TRNQ.BAM~     override                 // Bounty Hunter's Paralytic Toxin innate ability icon
      ~RR/RR_CORE/SPELLS/RR#TRNQ.EFF~  override                 // Paralytic Toxin cast secondary spell effect
-
-COPY ~RR/RR_CORE/SPELLS/RR#TRNQ2.EFF~ override                 // Paralytic Toxin protect from secondary spell effect (for Golems, Undead...etc.)
-  SAY 0x1C @88 // Unaffected by Paralytic Toxin
 
 COPY ~RR/RR_CORE/SPELLS/RR#TRNQ.SPL~  override                 // Bounty Hunter's Paralytic Toxin innate ability (coat weapons shell)
   SAY NAME1 @55 SAY NAME2 @55 // Paralytic Toxin
@@ -348,10 +332,12 @@ COPY ~RR/RR_CORE/SPELLS/RR#TRNQ.SPL~  override                 // Bounty Hunter'
   END  
 
 COPY ~RR/RR_CORE/SPELLS/RR#TRNQ2.SPL~ override                 // Paralytic Toxin second part (the actual ability)
-  PATCH_IF enhanced_edition BEGIN // use 318s instead of 177s
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
-  END  
+  PATCH_IF enhanced_edition BEGIN // use 318s instead of 177s,  use 321s to prevent stacking on EEs, not 206
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks 
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
+  END 
 
 COPY_EXISTING ~LUABBR.2DA~            override                 // Master HLA table
   SET_2DA_ENTRY 39 1 1 ~Th3~                                   // Give Bounty Hunters a new HLA table designation
@@ -369,9 +355,23 @@ END
 OUTER_SPRINT desc @54
 LAF set_kit_description STR_VAR kit = bounty_hunter desc END
 
+ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
 
+  COPY ~RR/RR_CORE/SPELLS/RR#TAS1B.EFF~ override               // Death Attack protect from secondary spell effect (for Golems, Undead...etc.)
+    SAY 0x1C @86 // Unaffected by Death Attack
 
+  COPY ~RR/RR_CORE/SPELLS/RR#TAS2B.EFF~ override               // Poison Weapon protect from secondary spell effect (for Golems, Undead...etc.)
+    SAY 0x1C @83 // Unaffected by Poison
 
+  COPY ~RR/RR_CORE/SPELLS/RR#TBH1A.EFF~ override                 // Alchemical Trap subdual damage immunity
+    SAY 0x1C @90 // Immune to subdual damage
+
+  COPY ~RR/RR_CORE/SPELLS/RR#TBH1B.EFF~ override                 // Alchemical Trap secondary effects immunity
+
+  COPY ~RR/RR_CORE/SPELLS/RR#TRNQ2.EFF~ override                 // Paralytic Toxin protect from secondary spell effect (for Golems, Undead...etc.)
+    SAY 0x1C @88 // Unaffected by Paralytic Toxin
+
+END
 
 ///////////////////////////////////////////////////////////////////////
 // Rogue Rebalancing - Thief HLA revisions
@@ -500,14 +500,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#THL1A.SPL~ override                 // Crippling Stri
       parameter1 = RESOLVE_STR_REF (@716) // Crippled
   END
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, use 321 to stop stacking
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general = undead
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // any remaining race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general = undead
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // any remaining race checks
     LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
     LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
   END 
 
 COPY ~RR/RR_CORE/SPELLS/RR#THL1A.EFF~ override                 // Crippling Strike cast secondary spell EFF
-     ~RR/RR_CORE/SPELLS/RR#THL1B.EFF~ override                 // Crippling Strike protect from secondary spell EFF (for Golems, Undead...etc.)
      ~RR/RR_CORE/BAM/RR#THL4B.BAM~    override                 // Acid Trap icon
      ~RR/RR_CORE/BAM/RR#TRPAC.BAM~    override                 // Acid Trap ground effect BAM
      ~RR/RR_CORE/VVC/RR#TRPAC.VVC~    override                 // Acid Trap VVC #1 (ground effect animation)
@@ -564,8 +563,8 @@ COPY ~rr/rr_core/spells/rr#thl06.spl~ override                 // Set Exploding 
   END
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, use 321 to stop stacking
     LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 STR_VAR match_resource = rr#thl6b END // remove dupe 177s
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 STR_VAR resource = rr#thl06 END // race checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 STR_VAR resource = rr#thl06 END // class checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 STR_VAR resource = rr#thl06 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 324 parameter2 = 105 STR_VAR resource = rr#thl06 END // class checks
   END 
 
 COPY_EXISTING ~spcl911.spl~ override                           // Set Exploding Trap (primary SPL)
@@ -610,9 +609,10 @@ ACTION_IF FILE_EXISTS_IN_GAME spcl910.spl BEGIN
   BUT_ONLY
 END
 
-
-
-
+ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
+  COPY ~RR/RR_CORE/SPELLS/RR#THL1B.EFF~ override                 // Crippling Strike protect from secondary spell EFF (for Golems, Undead...etc.)
+END 
+     
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -727,9 +727,6 @@ COPY ~RR/RR_CORE/SPELLS/RR#BBL02.SPL~ override                // Blade new song 
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
   END  
 
-COPY ~RR/RR_CORE/SPELLS/RR#WDIS.EFF~  override                // Weapons Display immunity (prevents Undead, Demons, Golems... from being affected)
-  SAY 0x1C @84 // Unaffected by the Weapons Display
-
 COPY ~RR/RR_CORE/SPELLS/RR#WDIS.SPL~  override                // Weapons Display ability
   SAY NAME1 @31 SAY NAME2 @31                                 // Weapons Display
   SAY UNIDENTIFIED_DESC @11000
@@ -758,8 +755,8 @@ COPY ~RR/RR_CORE/SPELLS/RR#WDIS.SPL~  override                // Weapons Display
       parameter1 = RESOLVE_STR_REF (@10009) // Spin already active.
   END
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude by race/general; use 321s to prevent stacking on EEs, not 206
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 324 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
     LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
     LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END
   END 
@@ -898,7 +895,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS00.SPL~ override                // Revised Jester 
     PATCH_IF (confusion_immunity > 0) BEGIN
       LPF CLONE_EFFECT INT_VAR match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
     END
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
@@ -944,12 +941,6 @@ COPY_EXISTING ~WEAPPROF.2DA~ override                          // Restrict Jeste
   SET_2DA_ENTRY_LATER ~RR#BSKWR~ 27 43 ~0~                     // Disallow Longbow proficiency
   SET_2DA_ENTRIES_NOW ~RR#BSKWR~ 1
   PRETTY_PRINT_2DA
-BUT_ONLY
-
-// Jester song protection EFF (used for mindless creatures such as Golems, Skeletons and Zombies)
-
-COPY ~RR/RR_CORE/SPELLS/RR#BJS00.EFF~ override                 // Jester song immunity EFF
-  SAY 0x1C @82 // Unaffected by the Jester's song
 BUT_ONLY
 
 OUTER_SPRINT desc @32
@@ -1005,6 +996,17 @@ ACTION_IF FILE_EXISTS_IN_GAME spcl920.spl BEGIN
   BUT_ONLY
 END
 
+
+ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
+
+  // Jester song protection EFF (used for mindless creatures such as Golems, Skeletons and Zombies)
+  COPY ~RR/RR_CORE/SPELLS/RR#BJS00.EFF~ override                 // Jester song immunity EFF
+    SAY 0x1C @82 // Unaffected by the Jester's song
+
+  COPY ~RR/RR_CORE/SPELLS/RR#WDIS.EFF~  override                // Weapons Display immunity (prevents Undead, Demons, Golems... from being affected)
+    SAY 0x1C @84 // Unaffected by the Weapons Display
+
+END 
 
 ///////////////////////////////////////////////////////////////////////
 // Rogue Rebalancing - Bard HLA revisions
@@ -1249,7 +1251,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS02.SPL~ override                      // Jester's 
     PATCH_IF (hold_immunity > 0) BEGIN
       LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 175 opcode = 328 parameter2 = hold_immunity special = 1 END // clone immunity into spell state
     END  
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
@@ -1353,7 +1355,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS04.SPL~ override                      // Jester's 
       LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 175 opcode = 328 parameter2 = hold_immunity special = 1 END // clone immunity into spell state
     END  
     LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = ~rr#bjs04~ END 
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // prevent stacking
     LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter2 = 66 duration = 1 STR_VAR resource = EVAL ~%SOURCE_RES%~ END // exclude deafened creatures
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // break invis
@@ -1374,20 +1376,13 @@ COPY ~RR/RR_CORE/SPELLS/RR#BJS11.SPL~ override                      // Jester's 
 
 
 
-// Jester song protection EFF (used for mindless creatures such as Golems, Skeletons, Slimes and Zombies)
-
-COPY ~RR/RR_CORE/SPELLS/RR#BJS02.EFF~ override                      // Jester's Enhanced song immunity EFF
-     ~RR/RR_CORE/SPELLS/RR#BJS04.EFF~ override                      // Jester's Lingering song immunity EFF
-  SAY 0x1C @82 // Unaffected by the Jester's song
-
 
 
 // New Bard HLAs (trap and evasion replacements)
 
 // Mass Charm
 
-COPY ~RR/RR_CORE/SPELLS/RR#BHL01.EFF~ override                      // Prevents Demons, Dragons, Constructs and Undead from being affected by Mass Charm
-     ~RR/RR_CORE/BAM/RR#BHL1B.BAM~    override                      // Mass Charm icon
+COPY ~RR/RR_CORE/BAM/RR#BHL1B.BAM~    override                      // Mass Charm icon
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL01.SPL~ override                      // Mass Charm spell file
   SAY NAME1 @40 SAY NAME2 @40 SAY UNIDENTIFIED_DESC @41 SAY DESC @41
@@ -1395,7 +1390,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL01.SPL~ override                      // Mass Char
     PATCH_IF (charm_immunity > 0) BEGIN
       LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 5 opcode = 324 parameter1 = charm_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
     END      
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
   END  
 
 
@@ -1403,8 +1398,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL01.SPL~ override                      // Mass Char
 
 LAM load_RR#FSCNT_var
 
-COPY ~RR/RR_CORE/SPELLS/RR#BHL02.EFF~ override                      // Prevents Demons, Dragons, Constructs and Undead from being affected by Enthralling Melody
-     ~RR/RR_CORE/BAM/RR#BHL2B.BAM~    override                      // Enthralling Melody icon
+COPY ~RR/RR_CORE/BAM/RR#BHL2B.BAM~    override                      // Enthralling Melody icon
 
 COPY ~RR/RR_CORE/SPELLS/RR#BHL02.SPL~ override                      // Enthralling Melody spell file
   SAY NAME1 @42 SAY NAME2 @42 SAY UNIDENTIFIED_DESC @43 SAY DESC @43
@@ -1421,7 +1415,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#BHL02.SPL~ override                      // Enthralli
     PATCH_IF (confusion_immunity > 0) BEGIN
       LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 128 opcode = 324 parameter1 = confusion_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
     END      
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 END // race checks
   END  
 
 
@@ -1782,6 +1776,17 @@ COMPILE ~RR/RR_CORE/COMPILE/RR#SCRL.BAF~                     // Scribe Scrolls i
 COPY    ~RR/RR_CORE/SPELLS/RR#SCRL.SPL~    override          // Scribe Scrolls (Bard version)
   SAY UNIDENTIFIED_DESC @8200 SAY DESC @8200
 
+ACTION_IF !enhanced_edition BEGIN // EEs use 318s, not EFFs
+
+  COPY ~RR/RR_CORE/SPELLS/RR#BHL01.EFF~ override                      // Prevents Demons, Dragons, Constructs and Undead from being affected by Mass Charm
+       ~RR/RR_CORE/SPELLS/RR#BHL02.EFF~ override                      // Prevents Demons, Dragons, Constructs and Undead from being affected by Enthralling Melody
+
+  // Jester song protection EFF (used for mindless creatures such as Golems, Skeletons, Slimes and Zombies)
+  COPY ~RR/RR_CORE/SPELLS/RR#BJS02.EFF~ override                      // Jester's Enhanced song immunity EFF
+       ~RR/RR_CORE/SPELLS/RR#BJS04.EFF~ override                      // Jester's Lingering song immunity EFF
+    SAY 0x1C @82 // Unaffected by the Jester's song
+    
+END 
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -2023,6 +2028,15 @@ COPY ~RR/RR_CORE/ITEMS/RR#SHM01.ITM~  override               // Lesser Shambler'
     LPF protection_from_string STR_VAR string END
   END
   PATCH_IF enhanced_edition BEGIN 
+    LPF CLONE_EFFECT INT_VAR match_opcode = 146 opcode = 324 timing = 0 parameter1 = 187 parameter2 = 105 END // class: elemental_fire immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 180 END // class: giant immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 182 END // class: golem_iron immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 186 END // class: elemental_air immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 146 parameter2 = 104 END // race: dragon immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 132 END // race: shadow immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 136 END // race: mist immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 133 END // race: spectre immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 134 END // race: wraith immune
     PATCH_IF (panic_immunity >= 0) BEGIN
       LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
       PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
@@ -2044,7 +2058,6 @@ COPY ~RR/RR_CORE/SPELLS/RR#SHM01.EFF~ override               // Lesser Shambler'
      ~RR/RR_CORE/SPELLS/RR#SHM02.EFF~ override               // Shambling Mound's summoning EFF
      ~RR/RR_CORE/SPELLS/RR#SHM03.EFF~ override               // Greater Shambler's summoning EFF
      ~RR/RR_CORE/BAM/RR#SHM.BAM~      override               // Shambler GUI icon
-     ~RR/RR_CORE/SPELLS/RR#SMENT.EFF~ override               // Shambler entanglement immunity (for huge and incorporeal creatures)
      ~RR/RR_CORE/SPELLS/RR#INVIS.SPL~ override               // Custom Invisibility spell, used for shambler blending
 
 COPY ~RR/RR_CORE/SPELLS/RR#SMENT.SPL~ override               // Shambler entanglement ability
@@ -2057,8 +2070,7 @@ COPY ~RR/RR_CORE/SPELLS/RR#SMENT.SPL~ override               // Shambler entangl
       parameter1 = RESOLVE_STR_REF (@10008) // Entangled
   END
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude targets; use 321 to stack better
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 5 opcode = 318 parameter2 = 105 END // class checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 match_opcode = 177  END // race, class checks done on items via 324s
     LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
     LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
   END 
@@ -2560,7 +2572,7 @@ ACTION_IF !game_is_iwdee BEGIN // not on IWD:EE
     WRITE_LONG 0x08 name WRITE_LONG 0x50 desc
     SAY NAME2 @142 SAY DESC @143
     PATCH_IF enhanced_edition BEGIN // 
-      LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 STR_VAR match_resource = cdelfcm0 resource = EVAL ~%SOURCE_RES%~ END // any remaining race checks
+      LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 324 parameter2 = 104 STR_VAR match_resource = cdelfcm0 resource = EVAL ~%SOURCE_RES%~ END // any remaining race checks
       LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 END // convert two effs for (half-)elven restance, delete the rest
       PATCH_IF (charm_immunity >= 0) BEGIN
         LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 5 opcode = 324 parameter1 = charm_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
@@ -2605,16 +2617,18 @@ COPY ~RR/RR_CORE/ITEMS/RR#WEAR.SPL~    override                                 
       match_parameter1 = 61410 // "Fatigued"
       parameter1 = RESOLVE_STR_REF (@712) // Fatigue accumulation
   END
-  PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  PATCH_IF enhanced_edition BEGIN // use 324s on items instead
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 match_opcode = 177 END // delete race/general checks
   END   
-
-COPY ~RR/RR_CORE/ITEMS/RR#WEAR.EFF~  override               // Immunity to the custom fatigue causing spell (used for undead, constructs, slimes and elementals)
 
 COPY ~RR/RR_CORE/ITEMS/RR#WEAR.ITM~  override               // The Weary Cudgel item file
   SAY NAME2 @148 SAY DESC @149
-
+  PATCH_IF enhanced_edition BEGIN 
+    LPF CLONE_EFFECT INT_VAR match_opcode = 146 opcode = 324 timing = 0 parameter1 = 4 parameter2 = 103 savingthrow = 0 END // general: undead immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 145 parameter2 = 104 END // race: elemental immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 144 END // race: golem immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 119 END // race: slime immune
+  END 
 
 // PnP Composite Shortbow (grants +1 damage, requires 16 strength)
 
@@ -3409,8 +3423,12 @@ ACTION_IF enhanced_edition BEGIN
     LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
     BUT_ONLY IF_EXISTS
     
-END 
+END ELSE BEGIN // EEs use 324s, not EFFs
 
+  COPY ~RR/RR_CORE/SPELLS/RR#SMENT.EFF~ override               // Shambler entanglement immunity (for huge and incorporeal creatures)
+       ~RR/RR_CORE/ITEMS/RR#WEAR.EFF~   override               // Immunity to the custom fatigue causing spell (used for undead, constructs, slimes and elementals)
+
+END 
 
 ///////////////////////////////////////////////////////////////////////
 // Rogue Rebalancing - Upgradeable Equipment
@@ -3432,19 +3450,19 @@ COPY ~RR/RR_UPGR/BAM/RR#BUC11.BAM~    override               // Blazing Glory ic
      ~RR/RR_UPGR/SPELLS/RR#BUC1H.EFF~ override               // Blinds target for 24 seconds
      ~RR/RR_UPGR/SPELLS/RR#BUC1I.EFF~ override               // Displays the "Blinded" icon for 24 seconds
 
-COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~ override               // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
-
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~ override               // Stormcharged Axe stun effect
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 match_opcode = 177 END // delete, checked by 324s on item in EEs
   END   
 
 COPY ~RR/RR_UPGR/ITEMS/RR#SCAX2.ITM~  override               // Stormcharged Axe +5
   SAY NAME2 @5006 SAY DESC @5007
-  PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
+  PATCH_IF enhanced_edition BEGIN // usable by shaman on EEs
     WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+    LPF CLONE_EFFECT INT_VAR match_opcode = 146 opcode = 324 timing = 0 parameter1 = 4 parameter2 = 103 END // general: undead immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 144 parameter2 = 104 END // race: golem immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 119 END // race: slime immune
   END   
 
 COPY ~RR/RR_UPGR/SPELLS/RR#SCAX2.SPL~ override               // Static Discharge spell
@@ -3501,6 +3519,12 @@ COPY_EXISTING ~tooltip.2da~ ~override~
 
 COPY ~RR/RR_UPGR/ITEMS/RR#WEAR2.ITM~  override               // The Weary Cudgel +3
   SAY NAME2 @5021 SAY DESC @5022
+  PATCH_IF enhanced_edition BEGIN 
+    LPF CLONE_EFFECT INT_VAR match_opcode = 146 opcode = 324 timing = 0 parameter1 = 4 parameter2 = 103 savingthrow = 0 END // general: undead immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 145 parameter2 = 104 END // race: elemental immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 144 END // race: golem immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 119 END // race: slime immune
+  END 
 
 COPY ~RR/RR_UPGR/ITEMS/RR#RWAR2.ITM~  override               // Rogue's Ward +3
   SAY NAME2 @5023 SAY DESC @5024
@@ -3547,6 +3571,10 @@ ACTION_IF enhanced_edition BEGIN
     LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
     BUT_ONLY IF_EXISTS
 
+END
+
+ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
+  COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~ override               // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
 END
 
 ///////////////////////////////////////////////////////////////////////
@@ -3870,18 +3898,19 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#BOOTF.ITM~             override              // Boots
     LPF ALTER_EFFECT INT_VAR match_opcode = 142 parameter2 = 195 END // use 'increased movement rate' portrait icon on EEs
   END  
   
-COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~             override              // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~             override              // Stormcharged Axe stun effect
   PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
-    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 match_opcode = 177 END // delete, checked by 324s on item in EEs
   END   
   
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.ITM~             override              // Stormcharged Axe
   SAY NAME2 @206 SAY DESC @207
-  PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
+  PATCH_IF enhanced_edition BEGIN // usable by shaman on EEs
     WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
+    LPF CLONE_EFFECT INT_VAR match_opcode = 146 opcode = 324 timing = 0 parameter1 = 4 parameter2 = 103 END // general: undead immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 144 parameter2 = 104 END // race: golem immune
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 324 parameter1 = 119 END // race: slime immune
   END   
   
 COPY ~RR/RR_CYRIC/ITEMS/RR#BOW01.ITM~             override              // Blindstrike Bow
@@ -4171,6 +4200,9 @@ ACTION_IF FILE_EXISTS_IN_GAME ~ion1bz.bam~ BEGIN                        // Check
   BUT_ONLY
 END
 
+ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
+  COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~             override              // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
+END 
 
 
 ///////////////////////////////////////////////////////////////////////
