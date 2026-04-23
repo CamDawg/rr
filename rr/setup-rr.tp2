@@ -1867,21 +1867,13 @@ LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI201 destina
 LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI208 destination = ~RR#WI208~ RET_ARRAY cd_clone_spell_array END // Clone Know Alignment (used by Keeper of the Law)
 LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI212 destination = ~RR#WI212~ RET_ARRAY cd_clone_spell_array END // Clone Mirror Image (used by Rogue's Cowl)
 LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPDR401 destination = ~RR#WI405~ RET_ARRAY cd_clone_spell_array END // Clone Improved Invisibility (used by Rogue's Ward)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI406 destination = ~RR#WI406~ RET_ARRAY cd_clone_spell_array END // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI408 destination = ~RR#WI408~ RET_ARRAY cd_clone_spell_array END // Clone Stoneskin (used by the Barrier Amulet)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI507 destination = ~RR#WI507~ RET_ARRAY cd_clone_spell_array END // Clone Hold Monster (used by the Hold Fast longsword)
 LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI523 destination = ~RR#WI523~ RET_ARRAY cd_clone_spell_array END // Clone Sunfire (used by Blazing Glory)
-LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI721 destination = ~RR#WI721~ RET_ARRAY cd_clone_spell_array END // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
 
 COPY_EXISTING ~RR#WI201.spl~ ~override~ // Clone Blur (used by Rogue's Cowl)
               ~RR#WI208.spl~ ~override~ // Clone Know Alignment (used by Keeper of the Law)
               ~RR#WI212.spl~ ~override~ // Clone Mirror Image (used by Rogue's Cowl)
               ~RR#WI405.spl~ ~override~ // Clone Improved Invisibility (used by Rogue's Ward)
-              ~RR#WI406.spl~ ~override~ // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
-              ~RR#WI408.spl~ ~override~ // Clone Stoneskin (used by the Barrier Amulet)
-              ~RR#WI507.spl~ ~override~ // Clone Hold Monster (used by the Hold Fast longsword)
               ~RR#WI523.spl~ ~override~ // Clone Sunfire (used by Blazing Glory)
-              ~RR#WI721.spl~ ~override~ // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
   PATCH_IF !enhanced_edition BEGIN // EEs can use the the cast-instantly-at-level mode that's not in the originals
     LPF ALTER_SPELL_HEADER INT_VAR speed = 1 END
   END  
@@ -3854,6 +3846,27 @@ REQUIRE_PREDICATE GAME_INCLUDES ~tob~ @902
 
 INCLUDE "rr/lib/ds.tph"                                                      // Detectable Spells
 
+// Clone several spells and make them innate in order to avoid Cowled Wizard magic license warning and item caster level issues
+// clone after DS so that they inherit whatever stats/profs get set by the originals
+INCLUDE ~rr/lib/cd_clone_spell_bulk_first.tpa~ // Include my custom "Spell to Innate" function
+ACTION_CLEAR_ARRAY cd_clone_spell_array        // do this once
+
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI406 destination = ~RR#WI406~ RET_ARRAY cd_clone_spell_array END // Clone Minor Globe of Invulnerability (used by the Barrier Amulet)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI408 destination = ~RR#WI408~ RET_ARRAY cd_clone_spell_array END // Clone Stoneskin (used by the Barrier Amulet)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI507 destination = ~RR#WI507~ RET_ARRAY cd_clone_spell_array END // Clone Hold Monster (used by the Hold Fast longsword)
+LAF cd_clone_spell_bulk INT_VAR make_innate = 1 STR_VAR source = SPWI721 destination = ~RR#WI721~ RET_ARRAY cd_clone_spell_array END // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
+
+COPY_EXISTING ~RR#WI406.spl~ ~override~ // Clone Minor Globe of Invulnrability (used by the Barrier Amulet)
+              ~RR#WI408.spl~ ~override~ // Clone Stoneskin (used by the Barrier Amulet)
+              ~RR#WI507.spl~ ~override~ // Clone Hold Monster (used by the Hold Fast longsword)
+              ~RR#WI721.spl~ ~override~ // Clone Mass Invisibility (used by Venduris' Ring of Concealment)
+  PATCH_IF !enhanced_edition BEGIN // EEs can use the the cast-instantly-at-level mode that's not in the originals
+    LPF ALTER_SPELL_HEADER INT_VAR speed = 1 END
+  END  
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 136 target = 1 timing = 1 END // force visible
+
+INCLUDE ~rr/lib/cd_clone_spell_bulk_last.tpa~
+
 // CoC area files
 
 COPY ~RR/RR_CYRIC/AREAS/RR#001.ARE~            override                 // The altered City Gates area
@@ -3910,16 +3923,30 @@ COPY_EXISTING ~AR0800.ARE~ override
 COPY ~RR/RR_CYRIC/BAM~                            override              // Icons and portraits for the CoC spell effects, items and characters
 COPY ~RR/RR_CYRIC/ITEMS/RR#AMULB.ITM~             override              // Barrier amulet
   SAY NAME2 @202 SAY DESC @203
+  PATCH_IF enhanced_edition BEGIN // use mode 2 for op 146
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+  END
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#BOOTF.ITM~             override              // Boots of the Fox
   SAY NAME2 @204 SAY DESC @205
+  PATCH_IF enhanced_edition BEGIN
+    LPF ALTER_EFFECT INT_VAR match_opcode = 142 parameter2 = 195 END // use 'increased movement rate' portrait icon on EEs
+  END  
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.EFF~             override              // Stormcharged Axe stun effect immunity (for Constructs, Undead, Slimes...)
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.SPL~             override              // Stormcharged Axe stun effect
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude race/general
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race checks
+  END   
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#SCAXE.ITM~             override              // Stormcharged Axe
   SAY NAME2 @206 SAY DESC @207
   PATCH_IF enhanced_edition BEGIN // usbale by shaman on EEs
     WRITE_LONG 0x1e (THIS BAND `BIT30) // removes druid restriction, add back as 319 below
     LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 parameter1 = 11 parameter2 = 5 timing = 2 special = 1080 END
   END   
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#BOW01.ITM~             override              // Blindstrike Bow
   SAY NAME1 @150 SAY NAME2 @234 SAY 0x50 @151 SAY DESC @235
   WRITE_ASCIIE 0x22 ~%anim_bw%~ #2	//Short bow
@@ -3931,26 +3958,51 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#BOW01.ITM~             override              // Blind
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWH.EFF~             override              // Blindstrike Bow THAC0 vs. Beholders bonus
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWD.EFF~             override              // Blindstrike Bow damage vs. Beholders bonus
 COPY ~RR/RR_CYRIC/ITEMS/RR#BBOWS.EFF~             override              // Blindstrike Bow Beholder saving throw penalty vs. blindness effect
-COPY ~RR/RR_CYRIC/ITEMS/RR#BBOW.SPL~              override              // Blindstrike Bow blindness effect
+COPY ~RR/RR_CYRIC/ITEMS/RR#BBOW.SPL~              override              // Blindstrike Bow blindness effect  
+  PATCH_IF enhanced_edition BEGIN // use 321 for stacking on EEs
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 opcode = 321 parameter1 = 0 duration = 0 STR_VAR insert = first END
+    LPF DELETE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 206 END // use 321 to prevent stacking on EEs
+  END 
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#HOLDF.ITM~             override              // Holdfast longsword
   SAY NAME2 @208 SAY DESC @209
+  PATCH_IF enhanced_edition BEGIN // use mode 2 for op 146
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+  END
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#ABIH.ITM~              override              // Abishai Hide
   SAY NAME2 @210 SAY DESC @211
 COPY ~RR/RR_CYRIC/ITEMS/RR#DIVER.ITM~             override              // Spell Diver
   SAY NAME2 @212 SAY DESC @213
 COPY ~RR/RR_CYRIC/ITEMS/RR#RCOWL.ITM~             override              // Rogue's Cowl
   SAY NAME2 @214 SAY DESC @215
+  PATCH_IF enhanced_edition BEGIN // use mode 2 for op 146
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+  END
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#SHBTS.ITM~             override              // Shadowed Boots
   SAY NAME2 @218 SAY DESC @219
 COPY ~RR/RR_CYRIC/ITEMS/RR#STONG.ITM~             override              // Salamander's Tongue
   SAY NAME2 @220 SAY DESC @221
 COPY ~RR/RR_CYRIC/ITEMS/RR#HELMD.ITM~             override              // Dead Man's Face helm
   SAY NAME2 @222 SAY DESC @223
+  LPF protection_from_string
+    STR_VAR
+      string = "panic"
+  END
+  PATCH_IF enhanced_edition BEGIN // use eefp spellstates, if available
+    PATCH_IF (panic_immunity >= 0) BEGIN
+      LPF CLONE_EFFECT INT_VAR match_opcode = 101 match_parameter2 = 24 opcode = 328 parameter2 = panic_immunity special = 1 END // clone immunity into spell state
+      PATCH_IF FILE_EXISTS_IN_GAME ~#curefer.spl~ BEGIN 
+        LPF ALTER_EFFECT INT_VAR match_opcode = 161 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curefer~ END  // change remove fear op to spell
+      END  
+    END 
+  END
+
 COPY ~RR/RR_CYRIC/ITEMS/RR#HELMS.ITM~             override              // Sune's Laurel
   SAY NAME2 @224 SAY DESC @225
   WRITE_ASCIIE 0x22 ~%anim_jb%~ #2	// 1pp circlet band icon (JB)
   WRITE_ASCIIE 0x44 ~%anim_jbg%~ #8    // amulet ground icon
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 target = 1 timing = 2 END
   PATCH_IF 1pp_palette BEGIN
     LPF ALTER_EFFECT INT_VAR match_opcode = 7 parameter1 = 130 END
   END
@@ -3958,14 +4010,22 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#CHN01.ITM~             override              // Drow 
   SAY NAME2 @236  SAY DESC @237
 COPY ~RR/RR_CYRIC/ITEMS/RR#RNG01.ITM~             override              // Geminus, the PnP Ring of Wizardry (doubles 1st and 2nd level mage spells)
   SAY NAME2 @238  SAY DESC @239
+  
+COPY_EXISTING ~ring08.itm~   ~override~ // update rings of wizardry to also exclude geminus
+              ~ohringwi.itm~ ~override~
+  LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 180 STR_VAR resource = ~rr#rng01~ END
+  BUT_ONLY IF_EXISTS
+
 COPY ~RR/RR_CYRIC/ITEMS/RR#LCRWN.ITM~             override              // The Blessed Leaf Crown
   SAY NAME2 @240  SAY DESC @241
   WRITE_ASCIIE 0x22 ~%anim_jb%~ #2	// 1pp circlet band icon (JB)
   WRITE_ASCIIE 0x44 ~%anim_jbg%~ #8    // amulet ground icon
-	LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 53 parameter2 = 52 target = 1 timing = 2 END
+  LPF protection_from_string STR_VAR string = "diseased"  END
+  LPF protection_from_string STR_VAR string = "poison"  END
 	PATCH_IF 1pp_palette BEGIN
 	  LPF ALTER_EFFECT INT_VAR match_opcode = 7 parameter1 = 133 END
 	END
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#SDEAT.ITM~             override              // Silent Death
   SAY NAME2 @216 SAY DESC @217
   LPF ALTER_EFFECT
@@ -3977,23 +4037,41 @@ COPY ~RR/RR_CYRIC/ITEMS/RR#SDEAT.ITM~             override              // Silen
       match_parameter1 = 70396 // Hit Points Lowered
       parameter1 = RESOLVE_STR_REF (@89) // Vital Strike
   END
+  PATCH_IF (silence_immunity >= 0) BEGIN // use eefp spellstates, if available
+    LPF CLONE_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 38 opcode = 324 parameter1 = silence_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
+  END  
 BUT_ONLY
 
 COPY ~RR/RR_CYRIC/ITEMS/RR#VLUCK.ITM~             override              // Venduris' Luckstone
   SAY NAME2 @226 SAY DESC @227
 COPY ~RR/RR_CYRIC/ITEMS/RR#VRING.ITM~             override              // Venduris' Ring of Concealment
   SAY NAME2 @228 SAY DESC @229
+  PATCH_IF enhanced_edition BEGIN // use mode 2 for op 146
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 match_opcode = 146 parameter2 = 2 END
+  END 
+  
 COPY ~RR/RR_CYRIC/ITEMS/RR#VCLK.ITM~              override              // Venduris' Cloak
   SAY NAME2 @232 SAY DESC @233
 COPY ~RR/RR_CYRIC/ITEMS/RR#VWARD.ITM~             override              // Venduris' Scroll
  SAY NAME2 @230 SAY DESC @231
 COPY ~RR/RR_CYRIC/ITEMS/RR#BT01.ITM~              override              // Venduris' Boots of Speed
+  PATCH_IF enhanced_edition BEGIN
+    LPF ALTER_EFFECT INT_VAR match_opcode = 142 parameter2 = 195 END // use 'increased movement rate' portrait icon on EEs
+  END  
+  
 COPY ~RR/RR_STIM/ITEMS/RR#INV.ITM~                override              // Invulnerability item for cutscene creatures
 
 
 // CoC SPELLS
 
 COPY ~RR/RR_CYRIC/SPELLS/RR#VDET.SPL~             override              // Venduris' Enhanced Detect Illusion ability
+  PATCH_IF FILE_EXISTS_IN_GAME ~#curendt.spl~ BEGIN // use eefp cure spells, if available
+    LPF ALTER_EFFECT INT_VAR match_opcode = 70 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#curendt~ END  // non detection
+  END  
+  PATCH_IF FILE_EXISTS_IN_GAME ~#cureinv.spl~ BEGIN // use eefp cure spells, if available
+    LPF ALTER_EFFECT INT_VAR match_opcode = 116 opcode = 146 parameter1 = 0 parameter2 = 2 STR_VAR resource = ~#cureinv~ END  // invis
+  END
+  
 COPY ~RR/RR_CYRIC/SPELLS/RR#GONE!.SPL~            override              // Cutscene animation removal spell
 COPY ~RR/RR_CYRIC/SPELLS/RR#BACK!.SPL~            override              // Cutscene animation restore spell
 COPY ~RR/RR_CYRIC/SPELLS/RR#VSBL.SPL~             override              // Spell which renders the caster visible but doesn't remove Improved Invisibility (used after opponents' Spell Triggers and such to ensure fair play)
