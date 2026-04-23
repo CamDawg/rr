@@ -1,0 +1,4 @@
+COPY ~RR/RR_CORE/BAM/RR#ACUMN.BAM~   override                     // Dagger of Acumen (for Aran Linvail)
+
+COPY ~RR/RR_CORE/ITEMS/RR#ACUMN.ITM~ override
+  SAY NAME2 @146 SAY DESC @147

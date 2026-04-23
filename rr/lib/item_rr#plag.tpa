@@ -1,0 +1,60 @@
+// Plaguebearer (Dagger +3)
+
+COPY ~RR/RR_CORE/BAM/RR#PLAG.BAM~    override
+
+COPY ~RR/RR_CORE/ITEMS/RR#PLAG.ITM~  override
+  SAY NAME2 @124 SAY DESC @125 // Plaguebearer
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG1.EFF~ override                // Filthy Fever immunity effect (applies to Undead, Constructs, Slimes and Elementals)
+  SAY 0x1C @87 // Unaffected by Disease
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG1.SPL~ override                // Filthy Fever disease (-2 to DEX and CON)
+  SAY NAME1 @717 SAY NAME2 @717 // Filthy Fever
+  LPF ALTER_EFFECT
+    INT_VAR
+      check_globals = 0
+      check_headers = 1
+      match_opcode = 139 // display string
+      match_parameter1 = 39752 // Stricken by a foul disease
+      parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
+  END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG2.EFF~ override                // Devil Chills immunity effect (applies to Undead, Constructs, Slimes and Elementals)
+  SAY 0x1C @87 // Unaffected by Disease
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG2.SPL~ override                // Devil Chills disease (-2 to STR + Slow effect)
+  SAY NAME1 @718 SAY NAME2 @718 // Devil Chills
+  LPF ALTER_EFFECT
+    INT_VAR
+      check_globals = 0
+      check_headers = 1
+      match_opcode = 139 // display string
+      match_parameter1 = 39752 // Stricken by a foul disease
+      parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
+  END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG3.EFF~ override                // Mummy Rot immunity effect (applies to Undead, Constructs, Slimes and Elementals)
+  SAY 0x1C @87 // Unaffected by Disease
+
+COPY ~RR/RR_CORE/SPELLS/RR#PLAG3.SPL~ override                // Mummy Rot disease (deals 20 points of disease damage, 2 per round)
+  SAY NAME1 @719 SAY NAME2 @719 // Mummy Rot
+  LPF ALTER_EFFECT
+    INT_VAR
+      check_globals = 0
+      check_headers = 1
+      match_opcode = 139 // display string
+      match_parameter1 = 39752 // Stricken by a foul disease
+      parameter1 = RESOLVE_STR_REF (@10007) // Stricken by a foul disease
+  END
+  PATCH_IF enhanced_edition BEGIN // use 318s to exclude golem/undead/slime/elementals, add death_immunity protections if available
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 3 opcode = 318 parameter2 = 103 END // general checks
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 177 match_parameter2 = 4 opcode = 318 parameter2 = 104 END // race chcks
+  END   
