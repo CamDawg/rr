@@ -435,7 +435,7 @@ Only usable by:
 @92 = ~Incapacitating effect broken~
 @93 = ~Fascinated~
 
-@111 = ~This is the buckler of Kiel the Legion-Killer, first-born son of Durlag Trollkiller and Clan-prince of his father's ill-fated tower. Its light weight and excellent craftmanship increase the dexterity of all who bear it by a single point.
+@111 = ~This is the buckler of Kiel the Legion-Killer, first-born son of Durlag Trollkiller and Clan-prince of his father's ill-fated tower. Its light weight and excellent craftsmanship increase the dexterity of all who bear it by a single point.
 
 STATISTICS:
 
@@ -502,7 +502,7 @@ Usable By:
   Everyone~
 
 @118 = ~Fragment of Enlightenment~
-@119 = ~This dim blue Ioun Stone appears to have been carefully polished into its current shape from a much rougher form. Rumors say that it was originally a piece of the sensory stone used by Mirdival the Astute, a Calimshite court wizard, who had spent his entire life researching and crafting magical artifacts for his Pasha. During his many travels, the wizard studied and familiarized himself with a large number of enchanted items and mystical objects. Fearful of forgetting important details, and not trusting the fragile nature of paper, Mirdival regularly stored his memories into a sensory stone which he had acquired from a planewalking Fire Genasi merchant. Unfortunately, one of his experiments went awry, and his whole tower was leveled by the ensuing explosion. During the towers's collapse, the sensory stone was shattered into a number of fragments, some of which still retain a small part of the wizard's memories.
+@119 = ~This dim blue Ioun Stone appears to have been carefully polished into its current shape from a much rougher form. Rumors say that it was originally a piece of the sensory stone used by Mirdival the Astute, a Calimshite court wizard, who had spent his entire life researching and crafting magical artifacts for his Pasha. During his many travels, the wizard studied and familiarized himself with a large number of enchanted items and mystical objects. Fearful of forgetting important details, and not trusting the fragile nature of paper, Mirdival regularly stored his memories into a sensory stone which he had acquired from a planewalking Fire Genasi merchant. Unfortunately, one of his experiments went awry, and his whole tower was leveled by the ensuing explosion. During the tower's collapse, the sensory stone was shattered into a number of fragments, some of which still retain a small part of the wizard's memories.
 
 STATISTICS:
 
@@ -604,7 +604,7 @@ Not Usable By:
  Mage~
 
 @128 = ~Black Cat's Claw~
-@129 = ~The profession of a ninja is very versatile, some are skilled assassins while others excel at the art of stealth and thievery. The owner of this blade undoubtedly belonged to the second group. Her true name remains a mystery, though she was known as The Black Cat, an infamous thief renowned for acquiring rare commodities for and from the upper-class circles of the Kara-Tur nobility. It was not unusual for her to steal a precious jewel from the collection of one noble, sell it to another wealthy aristocrat and then steal it back merely for the thrill of the deed. For her mischiefs, the Black Cat was hunted by many famous Kara-Tur warriors, but through a combination of luck and extraordinary acrobatic skill, she always managed to evade her pursuers. Eventually, as the story goes, she fell in love with a particularly persistent samurai and left her country and her former life together with him.
+@129 = ~The profession of a ninja is very versatile, some are skilled assassins while others excel at the art of stealth and thievery. The owner of this blade undoubtedly belonged to the second group. Her true name remains a mystery, though she was known as The Black Cat, an infamous thief renowned for acquiring rare commodities for and from the upper-class circles of the Kara-Tur nobility. It was not unusual for her to steal a precious jewel from the collection of one noble, sell it to another wealthy aristocrat and then steal it back merely for the thrill of the deed. For her mischief, the Black Cat was hunted by many famous Kara-Tur warriors, but through a combination of luck and extraordinary acrobatic skill, she always managed to evade her pursuers. Eventually, as the story goes, she fell in love with a particularly persistent samurai and left her country and her former life together with him.
 
 
 STATISTICS:
@@ -694,7 +694,7 @@ Usable by:
   Thieves~
 
 @138 = ~Tri-souled Sapphire~
-@139 = ~Akram Maluzar was an infamous Zhentarim wizard obsessed with the secrets of the ancient Nethril. During his many travels through the Great Waste he scoured a system of caves which, as he had guessed, interconnected with a buried Nethrese city. His enthusiasm was somewhat dampened when he found out that the ruins were heavily trapped and riddled with illusionary floors and sturdily locked doors. The ability to pass these obstacles was beyond Akram's skill, so he grew desperate. Not wanting to share the power of the Nethrese with anyone else, Akram chose to steal the very talents he lacked instead. Promising them a great share of the treasure, the wizard hired three exceptionally skilled Calimshite thieves - an expert locksmith, a shady trapmaster and a keen-eyed scout. Instead of sending them to the ancient city, Akram tricked the thieves and imprisoned their souls inside a Sapphire Ioun Stone, thus enchanting it with the traits which he sought. The procedure worked, and at first he was able to delve deep into the ruins without hindrance. Eventually however, the souls of the three thieves confined within the Ioun Stone began rebelling and started draining the wizard's health in an attempt to reclaim his body as their own. Driven by his lust for power Akram paid little heed to his condition until it was too late. Terribly fatigued, he collapsed in front of a ruined Nethrese library, and thereby accidentally activated a hidden trap which caused a cave in and claimed his life. Akram's prized Ioun Stone was later recovered by a wandering tribe of kobolds who mistook it for a simple jewel and traded it for supplies.
+@139 = ~Akram Maluzar was an infamous Zhentarim wizard obsessed with the secrets of the ancient Nethril. During his many travels through the Great Waste he scoured a system of caves which, as he had guessed, interconnected with a buried Netherese city. His enthusiasm was somewhat dampened when he found out that the ruins were heavily trapped and riddled with illusionary floors and sturdily locked doors. The ability to pass these obstacles was beyond Akram's skill, so he grew desperate. Not wanting to share the power of the Netherese with anyone else, Akram chose to steal the very talents he lacked instead. Promising them a great share of the treasure, the wizard hired three exceptionally skilled Calimshite thieves - an expert locksmith, a shady trapmaster and a keen-eyed scout. Instead of sending them to the ancient city, Akram tricked the thieves and imprisoned their souls inside a Sapphire Ioun Stone, thus enchanting it with the traits which he sought. The procedure worked, and at first he was able to delve deep into the ruins without hindrance. Eventually however, the souls of the three thieves confined within the Ioun Stone began rebelling and started draining the wizard's health in an attempt to reclaim his body as their own. Driven by his lust for power Akram paid little heed to his condition until it was too late. Terribly fatigued, he collapsed in front of a ruined Netherese library, and thereby accidentally activated a hidden trap which caused a cave in and claimed his life. Akram's prized Ioun Stone was later recovered by a wandering tribe of kobolds who mistook it for a simple jewel and traded it for supplies.
 
 Note: In order to gain the knowledge necessary to use the abilities which this item provides, the wearer must actually dive into the consciousness of the trapped souls. This process can be very straining, and using these abilities causes progressively more and more fatigue. The more one uses these abilities, the more fatigue one accumulates. The only way to remove the fatigue is a full night's rest.
 
@@ -742,7 +742,7 @@ Only Usable by:
   Bards~
 
 @144 = ~Harp of Descant~
-@145 = ~Lady Laxaella Bronshield, the Baroness of Tanistan, had this harp fashioned for her court jester before sending him, along with a company of her best soldiers, to deal with the recent Umber Hulk infestation of the Thornwood forest. At first, the soldiers were surprised that a jester was to accompany them on this task, merrily mocking his meager physique and his apparent fatuousness, but after they encountered the first Umber Hulk they soon realized the true importance of his role. To the soldiers' astonishment, the jester was completely unfazed by the Umber Hulk's terrible gaze, which simultaneously turned one of their most steadfast warriors into a stuporing idiot. Furthermore, the odd, quirky tune which the jester's harp produced somehow seemed to counter the effect of the monster's gaze, restoring the sanity to the afflicted soldier. In the end, the infestation was cleansed with no casualties and only minimal injuries. For the better part of their home trip, the soldiers carried the jester on their shoulders, all the time chanting praises in his honor.
+@145 = ~Lady Laxaella Bronshield, the Baroness of Tanistan, had this harp fashioned for her court jester before sending him, along with a company of her best soldiers, to deal with the recent Umber Hulk infestation of the Thornwood forest. At first, the soldiers were surprised that a jester was to accompany them on this task, merrily mocking his meager physique and his apparent fatuousness, but after they encountered the first Umber Hulk they soon realized the true importance of his role. To the soldiers' astonishment, the jester was completely unfazed by the Umber Hulk's terrible gaze, which simultaneously turned one of their most steadfast warriors into a stupor. Furthermore, the odd, quirky tune which the jester's harp produced somehow seemed to counter the effect of the monster's gaze, restoring the sanity to the afflicted soldier. In the end, the infestation was cleansed with no casualties and only minimal injuries. For the better part of their home trip, the soldiers carried the jester on their shoulders, all the time chanting praises in his honor.
 
 STATISTICS:
 
@@ -897,7 +897,7 @@ Tonight, the General has appointed a secret meeting with a few of his most trust
 ...
 
 Ches 17th, 1369
-I have arrived to the city yesterday, late at night, and I've quickly found an inn to my liking. It's quite cosy here, and they even hold theatrical plays from time to time. Nonetheless, in order to acquire the proof which the Council demands, the General has instructed me to mingle with the local thieves, as the exiled ones seem to have some kind of an arrangement with them. My Scout training should help me to easily blend in among them without drawing too much attention to myself.
+I have arrived to the city yesterday, late at night, and I've quickly found an inn to my liking. It's quite cozy here, and they even hold theatrical plays from time to time. Nonetheless, in order to acquire the proof which the Council demands, the General has instructed me to mingle with the local thieves, as the exiled ones seem to have some kind of an arrangement with them. My Scout training should help me to easily blend in among them without drawing too much attention to myself.
 
 ...
 
@@ -934,7 +934,7 @@ Tonight, the General has appointed a secret meeting with a few of his most trust
 ...
 
 Ches 17th, 1369
-I have arrived to the city yesterday, late at night, and I've quickly found an inn to my liking. It's quite cosy here, and they even hold theatrical plays from time to time. Nonetheless, in order to acquire the proof which the Council demands, the General has instructed me to mingle with the local thieves, as the exiled ones seem to have some kind of an arrangement with them. My Scout training should help me to easily blend in among them without drawing too much attention to myself.
+I have arrived to the city yesterday, late at night, and I've quickly found an inn to my liking. It's quite cozy here, and they even hold theatrical plays from time to time. Nonetheless, in order to acquire the proof which the Council demands, the General has instructed me to mingle with the local thieves, as the exiled ones seem to have some kind of an arrangement with them. My Scout training should help me to easily blend in among them without drawing too much attention to myself.
 
 ...
 
@@ -1221,7 +1221,7 @@ Not Usable By:
   Evil characters~
 
 @226 = ~Venduris' Luckstone~
-@227 = ~Originally stolen from the nymphs of Stormshire, this Ioun Stone has malcontently served Venduris for the past ten years. The essence of luck contained within it was abused by the evil assassin for guiding his hands towards the weak points of his foes and thus ensuring the maximum lethality of his attacks. Once beautiful to behold, resembling a radiant rainbow-patterned jewel, the Luckstone's magic eventually started to fade as it became corrupted under the influence of its new owner. The darkness that now resides within it stands as a reminder of Venduris' vile deeds.
+@227 = ~Originally stolen from the nymphs of Stormshire, this Ioun Stone has malcontentedly served Venduris for the past ten years. The essence of luck contained within it was abused by the evil assassin for guiding his hands towards the weak points of his foes and thus ensuring the maximum lethality of his attacks. Once beautiful to behold, resembling a radiant rainbow-patterned jewel, the Luckstone's magic eventually started to fade as it became corrupted under the influence of its new owner. The darkness that now resides within it stands as a reminder of Venduris' vile deeds.
 
 STATISTICS:
 
@@ -1278,7 +1278,7 @@ Usable by:
   Thieves~
 
 @234 = ~Blindstrike Bow~
-@235 = ~This composite short bow radiates with strong, necromatic enchantments which are commonly used by Yuan-Ti priests. The shaft of the bow resembles two snakes, each trying to swallow an eyeball carved at the grip. Along both sides of the shaft the phrase "May the greatness of Sseth blind the unworthy!" is inscribed. The bow was primarily used by Yuan-Ti sentries to prevent unwary trespassers from discovering the location of a secret temple which was hidden deep inside the Ashendale forest. For some reason Beholders and their kin seem to be highly vulnerable to any arrows fired from this bow.
+@235 = ~This composite short bow radiates with strong, necromantic enchantments which are commonly used by Yuan-Ti priests. The shaft of the bow resembles two snakes, each trying to swallow an eyeball carved at the grip. Along both sides of the shaft the phrase "May the greatness of Sseth blind the unworthy!" is inscribed. The bow was primarily used by Yuan-Ti sentries to prevent unwary trespassers from discovering the location of a secret temple which was hidden deep inside the Ashendale forest. For some reason Beholders and their kin seem to be highly vulnerable to any arrows fired from this bow.
 
 STATISTICS:
 
@@ -1732,7 +1732,7 @@ Usable By:
 @1149 = ~There, now we are even. (he smirks at you and takes the gold)~
 @1150 = ~(Arledrian's voice is growing weaker, and he seems to be straining with his every breath.)~
 @1151 = ~Right... I should have thought that much... ~
-@1152 = ~So, h-how did... *cough* ...how did you... (His wounds look severe, and he is barely managing to maintain his composure.)~
+@1152 = ~So, h-how did... *cough* ... how did you... (His wounds look severe, and he is barely managing to maintain his composure.)~
 @1153 = ~\[Lay On Hands\] - Easy there, don't strain yourself. Here, I can heal you by channeling some of my power into your body.~
 @1154 = ~Easy there, don't strain yourself. Here, I can heal you with my magic.~
 @1155 = ~Easy there, don't strain yourself. Here, take this healing potion, it will make you feel better. (give potion of healing)~
@@ -1848,7 +1848,7 @@ Usable By:
 @1303 = ~I have found Arledrian's journal, but I can't read it. It's written in elvish.~
 @1304 = ~I have found Arledrian's journal.~
 @1305 = ~Nothing so far. I'll let you know when I learn more.~
-@1306 = ~Best ye let me see that. Hm, this be lookin' like one of those things they're handin' out at the Five Flagons. Should 'ave figured he was hangin' 'round there, him having always blabberin' 'bout "lack of culture" in this downrotten town of ours.~
+@1306 = ~Best ye let me see that. Hm, this be lookin' like one of those things they're handin' out at the Five Flagons. Should 'ave figured he was hangin' 'round there, him having always blabberin' 'bout "lack of culture" in this downtrodden town of ours.~
 @1307 = ~Ye'd best pay a visit to that establishment an' pester the innkeep for what he be knowin'.~
 @1308 = ~Alright. I'll let you know if I find out anything new.~
 @1309 = ~No promises. I'll do it if I get the chance.~
@@ -1858,7 +1858,7 @@ Usable By:
 @1313 = ~And, I reckon it be an interesting read? Have ye found some leads?~
 @1314 = ~(hide Arledrian's true identity) - Just a few loose hints. It appears that he's been skulking around the Graveyard district. Probably looking for treasure.~
 @1315 = ~(reveal Arledrian's true identity) - According to this he was an agent of the Suldanessellar War Council and he had infiltrated your organization in order to learn more about your rival guild.~
-@1316 = ~Ye sure? I never would've figured that scrowny elf was a tomb raider!~
+@1316 = ~Ye sure? I never would've figured that scrawny elf was a tomb raider!~
 @1317 = ~If ye happen to run into him, tell Arledrian to report to the Shadowmaster at once.~
 @1318 = ~No problem. I'll inform him if I see him.~
 @1319 = ~Very well, but don't count on me to waste my time searching for him.~
@@ -1873,7 +1873,7 @@ Usable By:
 @1328 = ~That elven shopkeeper? Yes I've had some deals with him. Is he the one who has disappeared?~
 @1329 = ~No, not really. Is he the fence you are missing?~
 @1330 = ~Aye, and that be mighty strange too. Arledrian's always been the trustworthy kind, ne'er botched a deal since I've hired him.~
-@1331 = ~Not like him to just disappear without a word. I reckon somethin's a foul here.~
+@1331 = ~Not like him to just disappear without a word. I reckon somethin's afoul here.~
 @1332 = ~\[Insight\] - Have you tried searching his room? Perhaps we could find some clues about your fence's disappearance by looking through his personal belongings.~
 @1333 = ~Aran thinks he might have crossed over and joined the rival guild.~
 @1334 = ~Have you noticed anything strange about him lately?~
@@ -1891,7 +1891,7 @@ Usable By:
 @1346 = ~Not too well, he is dead.~
 @1347 = ~Alive and well, but he won't be coming back so soon. He is an agent of the Suldanessellar War Council. (reveal Arledrian's secret to Gaelan...)~
 @1348 = ~He is fine. As you know, he is an agent of the Suldanessellar War Council and he went to report home.~
-@1349 = ~Alredrian won't be coming back so soon. He asked me to tell you that he had to leave the city for personal reasons.~
+@1349 = ~Arledrian won't be coming back so soon. He asked me to tell you that he had to leave the city for personal reasons.~
 @1350 = ~Well, in any case, I thank ye for your help <CHARNAME>. Here, take this and know that the Shadow Thieves treat their allies well. (he hands you a small bag full of gems)~
 @1351 = ~Personal reasons? That damned elf, he's got some nerve!~
 @1352 = ~Bah, an' he'd been one of my best fences, ya know. We'd have made a load of gold, we would.~
@@ -1935,7 +1935,7 @@ Usable By:
 @1519 = ~(She quickly pages through the recent entries, scribbling some notes on the side)~
 @1520 = ~Hmm...~
 @1521 = ~Here, I've translated the last couple of pages for you. This looks fairly serious.~
-@1522 = ~Th' pansy elfling deserved what he got, scrowny an' frail as he was.~
+@1522 = ~Th' pansy elfling deserved what he got, scrawny an' frail as he was.~
 @1523 = ~Such is life. The weak are rooted out to make place for the strong who shall thrive.~
 @1524 = ~N-No! I must help him somehow!~
 @1525 = ~(Aerie holds up her holy symbol and chants)~
@@ -1974,16 +1974,16 @@ Usable By:
 @2004 = ~(He seems to thoroughly enjoy committing evil acts, and is directly responsible for many innocent deaths.)~
 
 @2020 = ~(You see a huge leather-skinned man with a hint of green color to his face. His teeth seem sharper than normal and his face looks menacing.)~
-@2021 = ~(He is holding a radiant blue axe in his right hand and a faintly glittering longsword in his left. Peering beneath a great horned helm, his sharp charcoal-gray eyes betray a cunning mind hiding behind this rough facade.)~
+@2021 = ~(He is holding a radiant blue axe in his right hand and a faintly glittering long sword in his left. Peering beneath a great horned helm, his sharp charcoal-gray eyes betray a cunning mind hiding behind this rough facade.)~
 @2022 = ~(You see a huge leather-skinned man with a hint of green color to his face. His teeth seem sharper than normal and his face looks menacing. A sleek golden girdle sparkles around his burly waist and many large potion bottles are strapped onto it.)~
-@2023 = ~(He is holding a radiant blue axe in his right hand and a faintly glittering longsword in his left. Whenever thunder rips across the sky the axe reacts with a crackle of energy. Peering beneath a great horned helm, his sharp charcoal-gray eyes betray a cunning mind hiding behind this rough facade.)~
+@2023 = ~(He is holding a radiant blue axe in his right hand and a faintly glittering long sword in his left. Whenever thunder rips across the sky the axe reacts with a crackle of energy. Peering beneath a great horned helm, his sharp charcoal-gray eyes betray a cunning mind hiding behind this rough facade.)~
 @2024 = ~(You feel an intense, almost painful, pounding behind your eyes... a strong aura of evil surrounds this man.)~
 @2025 = ~(He seems to truly relish in committing evil acts and is to be blamed for the deaths of countless innocents across the realms.)~
 
-@2040 = ~(You see an older man with long, silvery-black hair and weathered yellow skin. Beneath the sleaves of his worn robe several silver bracelets are faintly glinting.)~
+@2040 = ~(You see an older man with long, silvery-black hair and weathered yellow skin. Beneath the sleeves of his worn robe several silver bracelets are faintly glinting.)~
 @2041 = ~(In his right hand he is clutching a mace and a divine symbol, while his left hand is holding a large, plainly adorned shield. His odd, crooked smile and the strange gleam in his eyes give him a half-crazed expression.)~
 @2042 = ~(You see an older man with long, silvery-black hair and weathered yellow skin covered with many tattoos. Beneath the sleeves of his worn, purple robe several silver bracelets are faintly glinting.)~
-@2043 = ~(Despite his venerable age he seems to bear the weight of the platemail armor which he hides beneath the robe with relative ease. In his right hand he is clutching a mace and a divine symbol, while his left hand is holding a plainly adorned shield. His odd, crooked smile and a strange gleam in his eyes give him a half-crazed expression.)~
+@2043 = ~(Despite his venerable age he seems to bear the weight of the plate mail armor which he hides beneath the robe with relative ease. In his right hand he is clutching a mace and a divine symbol, while his left hand is holding a plainly adorned shield. His odd, crooked smile and a strange gleam in his eyes give him a half-crazed expression.)~
 @2044 = ~(You feel a sharp pain in your hands accompanied by an agonizing headache... an overwhelming aura of evil surrounds this man.)~
 @2045 = ~(The man is undoubtedly evil to the core. From the nature and the intensity of his aura, you are quite certain that he is a priest of an evil god. He is fully corrupted, and willingly commits even the most despicable acts for the pleasure of his patron deity.)~
 
@@ -2003,7 +2003,7 @@ Usable By:
 @2082 = ~(To Venduris' right stands a handsome young man of well-kept appearance. His shoulder-length black hair appears to be intentionally combed in a way which obscures the slightly pointy ears.)~
 @2083 = ~(To untrained eyes, he would look like a normal human, but judging by your previous observation and the delicate facial features, you are quite certain that at least some elven blood flows through his veins.)~
 @2084 = ~(In his left hand he holds a long, forked dagger with a red-hot tip, while in his right hand rests a masterfully crafted short sword etched with fine elvish runes. From time to time, he tauntingly swipes the two blades against each other.)~
-@2085 = ~(The darkly colored mail which he wears seems more akin to cloth than a suit of armor. It folds with ease, fluently following his every move. Judging by its design, the chainmail appears to be of Underdark origin, but this man is clearly not a dark elf.)~
+@2085 = ~(The darkly colored mail which he wears seems more akin to cloth than a suit of armor. It folds with ease, fluently following his every move. Judging by its design, the chain mail appears to be of Underdark origin, but this man is clearly not a dark elf.)~
 @2086 = ~(Noticing that you are watching him, he raises his head and stares back at you for a while. His eyes begin searching your face carefully, but suddenly, he twitches and turns away, as if he was unwilling to make eye contact with you. You realize that he just became aware of your elven descent.)~
 @2087 = ~(For a moment, you saw a trace of hesitation in his eyes, but once his view shifted back to Venduris, his face quickly regained its previous grim and determined expression.)~
 @2088 = ~(You feel a light throb behind your eyes... a faint aura of evil surrounds this man.)~
@@ -2164,7 +2164,7 @@ Usable By:
 @2616 = ~I see, let me ask you something else.~
 @2617 = ~Indeed, what you say is true, but in my line of work, I have often seen a good <PRO_MANWOMAN> fall in the reach of great power and unscrupulously betray <PRO_HISHER> former life and beliefs. You would not be the first nor the last one to make that choice.~
 @2618 = ~\[Persuade\] - All my life I have lived and served by the principles and beliefs of my faith and ethos. I fought only when it was necessary to protect my friends or when my own life was threatened. I have never killed a person for treasure or personal gain. Now answer me, Venduris, how can such a <PRO_MANWOMAN> possibly aspire to become the next <PRO_LADYLORD> of Murder?~
-@2619 = ~\[Reputation\] - My deeds speak for me, Venduris. If you are so familiar with my life then you are surely aware of my accomplishments. I have never betrayed trust, and have always strived to help the ones in need. Think about it, are those the traits of a <PRO_MANWOMAN> who desires the power of Cyric and Bhaal?~
+@2619 = ~\[Reputation\] - My deeds speak for me, Venduris. If you are so familiar with my life then you are surely aware of my accomplishments. I have never betrayed trust, and have always strove to help the ones in need. Think about it, are those the traits of a <PRO_MANWOMAN> who desires the power of Cyric and Bhaal?~
 @2620 = ~(After a moment of thought, he looks up to you again, but his gaze is different now. The malice has disappeared from his eyes, and you even think that you can trace a bit of respect in his new demeanor.)~
 @2621 = ~You... are right <CHARNAME>. The arguments you displayed are solid, I should have not doubted your path.~
 @2622 = ~In fact, now that I am certain that you have no plans to usurp my Lord's rulership, I am willing to let you live.~
@@ -2235,7 +2235,7 @@ Usable By:
 @2687 = ~Furthermore, your own blood, <CHARNAME>, has been used as a spell component so the wards are attuned to you personally. This conveniently prevents you from directly affecting the barrier in any way or leaving this area without my permission.~
 @2688 = ~\[Arcane Lore\] - Ahh, but you didn't actually cast the original spell yourself, did you, Venduris? You are merely using a command phrase and that scroll of yours to control it. It is quite obvious from your clumsy somatic gestures that you lack any *real* arcane training.~
 @2689 = ~\[Insight]\ - *Your* permission? You mean that you have cast this warding spell all by yourself? You don't really strike me as the mage type, Venduris.~
-@2690 = ~And how did you manage to dispell my protections and enchantments so easily? Even the most skilled members of the Cowled Wizards would have had difficulties with that, considering the degree of my power.~
+@2690 = ~And how did you manage to dispel my protections and enchantments so easily? Even the most skilled members of the Cowled Wizards would have had difficulties with that, considering the degree of my power.~
 @2691 = ~My blood...? And just how did you get ahold of that?~
 @2692 = ~Furthermore, your own blood, <CHARNAME>, as well as that of your fellow party members, was used as a spell component so the wards are attuned to you personally. This conveniently prevents you from directly affecting the barrier in any way or leaving this area without my permission.~
 @2693 = ~Our blood...? And just how did you get ahold of that?~
@@ -2593,7 +2593,7 @@ Not Usable By:
 @6011 = ~If ye ever get yer hands on some mithral, I could use it to coat the dart's tip and make it a wee bit stronger. Even a small piece will do.~
 @6012 = ~Ach, ye have a mithral piece! For 5,000 gold I could use it to coat the tip of that dart ye're holdin' and make it a wee bit stronger. Well, what say ye?~
 
-@6020 = ~Ye've a fancy sword there, <GIRLBOY>. Kara-Tur craftmanship, aye? Let me take a look...~
+@6020 = ~Ye've a fancy sword there, <GIRLBOY>. Kara-Tur craftsmanship, aye? Let me take a look...~
 @6021 = ~Hmm... the craft be truly flawless, I cannae do much 'bout that. Still, I could strengthen the anti-chaos enchantments on the blade if ye ever get ahold of some Illithid brine water.~
 @6022 = ~Ay, now... ye found some Illithid brine water, didn't ye? Well, fer 5,000 gold I could use that to bolster the axiomatic enchantments on that fancy Kara-Tur blade of yers. Are ye interested?~
 
