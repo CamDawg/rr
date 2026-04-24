@@ -3,7 +3,7 @@
 [![Downloads](https://img.shields.io/github/downloads/FredrikLindgren/rr/total?color=%2392403a)](https://github.com/FredrikLindgren/rr/releases)-->
 [![Platform](https://img.shields.io/badge/platform-Windows%20%a0%20macOS%20%a0%20Linux%20%a0%20Project%20Infinity-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
 [![Games](https://img.shields.io/badge/games-BG2%20%a0%20BGT%20%a0%20BG2%3AEE%20%a0%20EET%20%a0%20BG%3AEE%20%a0%20Tutu-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
-[![Language](https://img.shields.io/badge/language-English%20%a0%20Simplified%20Chinese%20%a0%20French%20%a0%20German%20%a0%20Italian%20%a0%20Japanese%20%a0%20Polish%20%a0%20Russian%20%a0%20Spanish--BR%20%a0%20ru%20%a0%20zh--CN-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
+[![Language](https://img.shields.io/badge/language-English%20%a0%20Simplified%20Chinese%20%a0%20French%20%a0%20German%20%a0%20Italian%20%a0%20Japanese%20%a0%20Polish%20%a0%20Russian%20%a0%20Spanish%2392403a)](https://github.com/FredrikLindgren/rr/releases)
 
 <!--
 Badges white space separator: %20%a0%20
