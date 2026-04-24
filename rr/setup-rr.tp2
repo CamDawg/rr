@@ -41,6 +41,7 @@ LANGUAGE ~Chinese~ ~Schinese~
 
 BEGIN @1 DESIGNATED 0
 REQUIRE_PREDICATE ENGINE_IS ~bg2 tob bgee bg2ee iwdee~ @902
+LABEL ~rr#_proper_dual_wielding~
 
 COPY_EXISTING ~sw1h01.itm~ ~override/RR#DWF.RR~
 
@@ -99,6 +100,7 @@ LAF rogue_twf END
 
 BEGIN @2 DESIGNATED 1
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
+LABEL ~rr#_thief_kit_revisions~
 
 // Assassin kit revision
 
@@ -382,6 +384,7 @@ END
 
 BEGIN @19 DESIGNATED 2
 REQUIRE_PREDICATE ENGINE_IS ~tob bg2ee iwdee~ AND GAME_INCLUDES ~tob~ @902
+LABEL ~rr#_thief_hla_revisions~
 
 
 // Update the Thief 2DAs with RR's revised HLA versions
@@ -623,6 +626,7 @@ END
 
 BEGIN @17 DESIGNATED 3
 REQUIRE_PREDICATE ENGINE_IS ~bg2 tob bgee bg2ee iwdee~ @902
+LABEL ~rr#_thief_racial_adjustments~
 
 COPY_EXISTING ~sw1h01.itm~ ~override/RR#PPTSK.RR~
 
@@ -653,6 +657,7 @@ BUT_ONLY
 
 BEGIN @3 DESIGNATED 4
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
+LABEL ~rr#_bard_kit_revisions~
 
 ACTION_IF ((!game_is_iwdee) AND                                               // don't change the True Bard song on IWD:EE 
            (!MOD_IS_INSTALLED ~iwdification/setup-iwdification.tp2~ ~50~) AND // or if bard songs from IWDSpells library are installed
@@ -1024,6 +1029,7 @@ END
 
 BEGIN @4 DESIGNATED 5
 REQUIRE_PREDICATE ENGINE_IS ~tob bg2ee~ AND GAME_INCLUDES ~tob~ @902
+LABEL ~rr#_bard_hla_revisions~
 
 INCLUDE "rr/lib/ds.tph"                                              // Detectable Spells
 
@@ -1814,6 +1820,7 @@ END
 
 BEGIN @9 DESIGNATED 6
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ @902
+LABEL ~rr#_bard_spell_progression~
 
 COPY_EXISTING ~sw1h01.itm~ ~override/RR#PPBRD.RR~
 
@@ -1874,6 +1881,7 @@ BUT_ONLY
 
 BEGIN @5 DESIGNATED 7                                               // Additional equipment for Thieves and Bards
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND !GAME_IS ~iwd-in-bg2~ @902
+LABEL ~rr#_new_equipment~
 
 INCLUDE ~RR/LIB/RR#SSOB.TPH~                                        // Include the Short Sword of Backstabbing patch macro
 
@@ -3455,6 +3463,7 @@ END
 
 BEGIN @18 DESIGNATED 8
 REQUIRE_PREDICATE ((GAME_INCLUDES ~tob~) AND (MOD_IS_INSTALLED ~rr.tp2~ ~7~)) @902
+LABEL ~rr#_upgradeable_equipment~
 
 
 COPY ~RR/RR_UPGR/ITEMS/RR#BUC11.ITM~  override               // Blazing Glory (Fading Glory upgrade)
@@ -3601,6 +3610,7 @@ BEGIN @15 DESIGNATED 9  // Use PnP thievery potions and prevent their effects fr
 SUBCOMPONENT @8  // Revised Thievery
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee~ @902
 REQUIRE_PREDICATE !ENGINE_IS ~iwdee~ ~Revised Thievery is not yet available for IWD: EE~
+LABEL ~rr#_revised_thievery_pnp~
 
 INCLUDE ~RR/LIB/RR#IDTLS.TPH~                                       // Include my custom "Identify Top Level Script" function
 INCLUDE ~RR/LIB/RR#THVRY.TPH~                                       // Include the Revised Thievery macro (hosts main code)
@@ -3717,6 +3727,7 @@ END
 
 BEGIN @16 DESIGNATED 10  // Retain default thievery potions and prevent their effects from stacking
 SUBCOMPONENT @8  // Revised Thievery
+LABEL ~rr#_revised_thievery_base~
 
 // *** For fellow modders *** this subcomponent can be detected by searching for the following file - RR#PTN36.SPL
 
@@ -3824,6 +3835,7 @@ END                                                                             
 
 BEGIN @6 DESIGNATED 11
 REQUIRE_PREDICATE GAME_INCLUDES ~tob~ @902
+LABEL ~rr#_chosen_of_cyric~
 
 INCLUDE "rr/lib/ds.tph"                                                      // Detectable Spells
 
@@ -4230,6 +4242,7 @@ END
 
 BEGIN @7 DESIGNATED 12
 REQUIRE_PREDICATE ENGINE_IS ~tob bgee bg2ee iwdee~ AND GAME_INCLUDES ~soa~ @902
+LABEL ~rr#_shadow_thief_improvements~
 
 INCLUDE "rr/lib/ds.tph"                                                       // Detectable Spells
 
@@ -5154,6 +5167,7 @@ COPY_EXISTING ARNWAR08.DLG override //Tizzak
 //////////////////////////////////////////////////////
 
 BEGIN @999 DESIGNATED 999
+LABEL ~rr#_bg2_style_icons~
 
 ACTION_BASH_FOR ~rr/rr_core/bam/bg2s~ ~^.+\.bam$~ BEGIN 
 
