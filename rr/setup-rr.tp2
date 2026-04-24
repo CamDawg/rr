@@ -1006,6 +1006,13 @@ ACTION_IF !enhanced_edition BEGIN // EEs use 324s, not EFFs
   COPY ~RR/RR_CORE/SPELLS/RR#WDIS.EFF~  override                // Weapons Display immunity (prevents Undead, Demons, Golems... from being affected)
     SAY 0x1C @84 // Unaffected by the Weapons Display
 
+END ELSE BEGIN // change spell type for bard songs
+
+  COPY_EXISTING ~rr#bdf02.spl~ ~override~
+                ~rr#bjs00.spl~ ~override~
+                ~rr#bsk00.spl~ ~override~
+    WRITE_SHORT 0x1c 5 // type: bard song
+    
 END 
 
 ///////////////////////////////////////////////////////////////////////
@@ -1785,6 +1792,15 @@ ACTION_IF !enhanced_edition BEGIN // EEs use 318s, not EFFs
   COPY ~RR/RR_CORE/SPELLS/RR#BJS02.EFF~ override                      // Jester's Enhanced song immunity EFF
        ~RR/RR_CORE/SPELLS/RR#BJS04.EFF~ override                      // Jester's Lingering song immunity EFF
     SAY 0x1C @82 // Unaffected by the Jester's song
+    
+END ELSE BEGIN // change spell type for bard songs
+
+  COPY_EXISTING ~rr#bdf04.spl~ ~override~
+                ~rr#bdf06.spl~ ~override~
+                ~rr#bjs02.spl~ ~override~
+                ~rr#bjs04.spl~ ~override~
+                ~rr#bsk00.spl~ ~override~
+    WRITE_SHORT 0x1c 5 // type: bard song
     
 END 
 
