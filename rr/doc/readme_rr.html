@@ -438,7 +438,8 @@ div.left-align {
         <li>Dead Man's Face was blocking a 'blind' string, but the immunity is to fear</li>
         <li>Ring of Geminus is not allowed to be worn with the Ring of Wizardry, but the implementation had some big loopholes</li>
         <li>A few script updates for the Shadow Thief Improvements weren't working due to how facing can get handled on EEs and (unlikely, but possible) the originals</li>
-        <li>BG2-Style BAMs will now only copy the needed artwork instead of all of it</li>
+        <li>BG2-Style Icons will now only copy the needed artwork instead of all of it</li>
+        <li>Made various abilities such as Paralytic Toxin usable while silenced, at least for EE and TobEx-enabled games</li>
         <li>Enhanced Edition-specific updates:
           <ul>
             <li>Spell/potion stacking now works by removing the previous application and then applying a new one, rather than locking you out for the entire duration</li>
@@ -448,6 +449,7 @@ div.left-align {
             <li>Creature racial/class/general immunities are now handled by EE-exclusive opcodes rather than the clunky way we have to do it on the originals</li>
             <li>All bard songs (regular or HLA) now check for target deafness, just like the original songs</li>
             <li>Boots which increase movement speed now use the EE-specific portrait icon for this rather than haste</li>
+            <li>Bard songs are now the correct type on EEs, allowing them to be affected correctly by items like SoD's Bard Hat</li>
           </ul>
         </li>
         <li>Under the hood changes
