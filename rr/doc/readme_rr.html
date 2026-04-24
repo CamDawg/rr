@@ -410,7 +410,56 @@ div.left-align {
   <!-- ================== Version History ================== -->
   <div>
     <h4><a name="version" id="version"></a>Version History</h4>
-    <div class="divimp"> <b>v4.92 - May 19, 2018</b><br />
+    <div class="divimp"> <b>WIP - changelog update April 23, 2026</b>
+      <ul>
+        <li>This ongoing update reflects the work of several contributors: abalabokhin, Angel, CamDawg, Lzw104522773,  Selphira, and TotoR115</li>
+        <li>Added a Simplified Chinese translation, courtesy of           Lzw104522773        </li>
+        <li>Updated Russian translation, courtesy of abalabokhin</li>
+        <li>Composite Shortbows would scale their damage with enchantment (e.g. base does +1, the Composite Shortbow +1 does +2 damage, &amp;c.) but bow damage only scales on Tutu, BGEE, and IWDEE. BG2, BG2EE, BGT, and EET no longer scale this damage with enchantment. </li>
+        <li>Unidentified Composite Shortbows now use the name and description of a regular Composite Shortbow</li>
+        <li>Resolved conflict with IWD Bard Songs, whether installed via IWDification, SCS, or other mods using the same library</li>
+        <li>Updated Detectable Spells library; this should remove some downstream mod conflicts</li>
+        <li>Fixed a harmless warning that happens on BG2EE installs when patching Graegan's Harp (misc2p.itm)</li>
+        <li>BG2 chapter checks will now be correct for EET games</li>
+        <li>Bard song updates to the kit ability tables should be a little bit more reliable</li>
+        <li>Some item patches are skipped if Item Revisions is present, as it already makes the changes</li>
+        <li>Resolved several issues with One Pixel Productions compatibility: some were checking for the wrong component, it was using 1pp-exclusive paperdolls without checking if they were available, and some other issues</li>
+        <li>Updated some ground icons</li>
+        <li>RR uses some BG2 Fixpack code if BG2FP isn't installed; this code was updated to the current BG2FP</li>
+        <li>Evasion (and possibly Exploding Trap) were not fully working due to effect misordering</li>
+        <li>Sound Barrier will now block the IWD spells Shout and Great Shout, if present; fixed a bug where it wasn't blocking a different ability due to effect misordering</li>
+        <li>Scroll Scribing HLA now covers IWD spells via IWDification, SCS, or other mods using the same library</li>
+        <li>Fixed multiple off-by-one probability errors, e.g. an item which was supposed to do something on 20% of hits was actually doing it on 21% of hits</li>
+        <li>Added tooltips for the Tri-Souled Sapphire and the Keeper of the Law (original and upgraded)</li>
+        <li>Outside of a few bespoke placements, Composite Shortbows (base through +3) are now handled by a general store patch that should cover original and mod-added stores</li>
+        <li>Ioun Stones no longer protect from critical hits, if the engine supports it (EEs or the originals with TobEx). </li>
+        <li>Several one-handed items that do bonus damage to a specific alignment/race/whatever were doing it the old way, which allowed the bonus damage to be applied to both weapons when dual-wielding</li>
+        <li>Boots which increase speed are now subject to Free Action blocking them</li>
+        <li>Dead Man's Face was blocking a 'blind' string, but the immunity is to fear</li>
+        <li>Ring of Geminus is not allowed to be worn with the Ring of Wizardry, but the implementation had some big loopholes</li>
+        <li>A few script updates for the Shadow Thief Improvements weren't working due to how facing can get handled on EEs and (unlikely, but possible) the originals</li>
+        <li>BG2-Style BAMs will now only copy the needed artwork instead of all of it</li>
+        <li>Enhanced Edition-specific updates:
+          <ul>
+            <li>Spell/potion stacking now works by removing the previous application and then applying a new one, rather than locking you out for the entire duration</li>
+            <li>If available, uses the new  spellstates from EE Fixpack to better facilitate immunities</li>
+            <li>Shamans can now use the axes and composite shortbows added by this mod</li>
+            <li>Major review and rewrite of item descriptions to follow the EE style guide</li>
+            <li>Creature racial/class/general immunities are now handled by EE-exclusive opcodes rather than the clunky way we have to do it on the originals</li>
+            <li>All bard songs (regular or HLA) now check for target deafness, just like the original songs</li>
+            <li>Boots which increase movement speed now use the EE-specific portrait icon for this rather than haste</li>
+          </ul>
+        </li>
+        <li>Under the hood changes
+          <ul>
+            <li>Mod is now immutable </li>
+            <li>Streamlined code here and there as available</li>
+            <li>Uses a new macro to clone spells into innates; specifically it'll now update other resources that interact with the original to also interact with the new clone</li>
+            <li>More robust patching for pausing dialogue</li>
+          </ul>
+        </li>
+      </ul> 
+      <b>v4.92 - May 19, 2018</b>
       <ul>
         <li>Correctly patch Kiel's Buckler.</li>
         <li>EE: Assassin's Poison Weapon does not mess with
@@ -421,11 +470,11 @@ div.left-align {
           already patched.</li>
         <li>Update Detectable Spells.</li>
       </ul>
-      <b>v4.91 - May 1, 2017</b><br />
+      <b>v4.91 - May 1, 2017</b>
       <ul>
         <li>Update to Polish translation by Etamin and Cahir.</li>
       </ul>
-      <b>v4.90 - August 24, 2015</b><br />
+      <b>v4.90 - August 24, 2015</b>
       <ul>
         <li>In BG1, the Returning Frost Dart has been moved to Black Lily's shop,
           within the city of Baldur's Gate.</li>
@@ -434,7 +483,7 @@ div.left-align {
         <li>Compatibility with EET. Thanks, K4thos.</li>
         <li>Better code for patching kit.ids.</li>
       </ul>
-      <b>v4.80 - January 31, 2015</b><br />
+      <b>v4.80 - January 31, 2015</b>
       <ul>
         <li>Update French translation.</li>
         <li>Update Spanish translation.</li>
@@ -446,13 +495,13 @@ div.left-align {
         <li>You can no longer steal from merchants on EE-type games, on account of an engine bug.</li>
         <li>Revised Pickpocketing works on BG: EE and BGII: EE.</li>
       </ul>
-      <b>v4.71 - May 8, 2014</b><br />
+      <b>v4.71 - May 8, 2014</b>
       <ul>
         <li>Update Italian translation.</li>
         <li>Update Russian translation.</li>
         <li>DS' CDDETECT.SPL is created from a spell.</li>
       </ul>
-      <b>v4.70 - April 13, 2014</b><br />
+      <b>v4.70 - April 13, 2014</b>
       <ul>
         <li>Update DS to a more recent version.</li>
         <li>The component &quot;Proper dual-wielding implementation for Thieves and Bards&quot; affects EE's Shadowdancer and mod-added Rogue kits.</li>
@@ -460,15 +509,15 @@ div.left-align {
         <li>Fix bad string references on BG:EE for harps, ioun stones and hoods.</li>
         <li>The guard in the Chosen of Cyric cutscene always dies.</li>
       </ul>
-      <b>v4.66 - November 18, 2013</b><br />
+      <b>v4.66 - November 18, 2013</b>
       <ul>
         <li>Jesters have their correct kit description.</li>
       </ul>
-      <b>v4.65 - November 17, 2013</b><br />
+      <b>v4.65 - November 17, 2013</b>
       <ul>
         <li>Update to WeiDU 236.</li>
       </ul>
-      <b>v4.64 - November 15, 2013</b><br />
+      <b>v4.64 - November 15, 2013</b>
       <ul>
         <li>Update the fixes to kit.ids</li>
         <li>Move the main readme to rr/doc/</li>
@@ -477,20 +526,20 @@ div.left-align {
         <li>Updates to make the mod compatible with the latest known changes to
           BG: EE and BGII: EE.</li>
       </ul>
-      <b>v4.63 - August 26, 2013</b><br />
+      <b>v4.63 - August 26, 2013</b>
       <ul>
         <li>Make changes to DS to get around a compatibility issue with SCS.</li>
       </ul>
-      <b>v4.62 - June 7, 2013</b><br />
+      <b>v4.62 - June 7, 2013</b>
       <ul>
         <li>New projectiles and secondary types no longer use the file rr#eval.2da as an intermediary. </li>
         <li>Fix a bug with effects being added in the wrong order.</li>
       </ul>
-      <b>v4.61 - April 5, 2013</b><br />
+      <b>v4.61 - April 5, 2013</b>
       <ul>
         <li>Add a Polish translation by Clan Children of Bhaal - BoRo &amp; Kinski.</li>
       </ul>
-      <b>v4.60 - March 3, 2013</b><br />
+      <b>v4.60 - March 3, 2013</b>
       <ul>
         <li>Blades properly gain access to the Whirlwind HLA when Refinements is also installed.</li>
         <li>Revised TRA setup.</li>
@@ -498,12 +547,12 @@ div.left-align {
         <li>Compatibility with BGEE for all relevant components.</li>
         <li>Updated the French translation.</li>
       </ul>
-      <b>v4.51 - September 17, 2012</b><br />
+      <b>v4.51 - September 17, 2012</b>
       <ul>
         <li>Updated the Russian, French and Spanish translations.</li>
         <li>Setting the global variable fl#RRNoMislead to 1 keeps Aran and Zaeron from using the Mislead spell. See the respective readmes of the Shadow Thief Improvements and Chosen of Cyric components for more information.</li>
       </ul>
-      <b>v4.50 - July 16, 2012</b><br />
+      <b>v4.50 - July 16, 2012</b>
       <ul>
         <li>Assassins now start with a backstab multiplier of x3 at level 1. Their maximum backstab multiplier is still x7 but they now reach it earlier (at level 17)</li>
         <li>Added the &quot;BG2-style icons for RR content&quot; component (courtesy of Daulmakan)</li>
@@ -512,7 +561,7 @@ div.left-align {
         <li>Venduris and Zaeron will no longer waste their attacks on Mordenkainen's Swords and other targets immune to physical damage</li>
         <li>The exact benefits of the Luck bonus (provided by certain items) are now explained in the FAQ section of the main Readme</li>
       </ul>
-      <b>v4.48 - March 25, 2012</b><br />
+      <b>v4.48 - March 25, 2012</b>
       <ul>
         <li>The &quot;Proper dual-wielding implementation for Thieves and Bards&quot; and &quot;Proper racial adjustments for thieving skills&quot; components can now be installed on SoA-only games</li>
         <li>The Boots of the Fox are now usable by Wizard Slayers</li>
@@ -523,7 +572,7 @@ div.left-align {
         <li>The Scribe Scrolls ability now takes into account Dimension Door scrolls added by Tutu, BGT, D0 Tweaks, Spell Revisions and aTweaks</li>
         <li>Unified the change-log and moved it to the main readme</li>
       </ul>
-      <b>Previous versions</b><br />
+      <b>Previous versions</b>
       <ul>
         <li><a href="rr_core.html#Version_changes">Core Components version history</a></li>
         <li><a href="rr_cyric.html#Version_changes">Chosen of Cyric version history</a></li>
