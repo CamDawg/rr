@@ -1,6 +1,6 @@
-[![Release](https://img.shields.io/github/v/release/FredrikLindgren/rr?include_prereleases&color=%2392403a)](https://github.com/FredrikLindgren/rr/releases/latest)
+<!--[![Release](https://img.shields.io/github/v/release/FredrikLindgren/rr?include_prereleases&color=%2392403a)](https://github.com/FredrikLindgren/rr/releases/latest)
 [![Published](https://img.shields.io/github/release-date-pre/FredrikLindgren/rr?display_date=published_at&label=published&color=%2392403a)](https://github.com/FredrikLindgren/rr/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/FredrikLindgren/rr/total?color=%2392403a)](https://github.com/FredrikLindgren/rr/releases)
+[![Downloads](https://img.shields.io/github/downloads/FredrikLindgren/rr/total?color=%2392403a)](https://github.com/FredrikLindgren/rr/releases)-->
 [![Platform](https://img.shields.io/badge/platform-Windows%20%a0%20macOS%20%a0%20Linux%20%a0%20Project%20Infinity-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
 [![Games](https://img.shields.io/badge/games-BG2%20%a0%20BGT%20%a0%20BG2%3AEE%20%a0%20EET%20%a0%20BG%3AEE%20%a0%20Tutu-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
 [![Language](https://img.shields.io/badge/language-English%20%a0%20Simplified%20Chinese%20%a0%20French%20%a0%20German%20%a0%20Italian%20%a0%20Japanese%20%a0%20Polish%20%a0%20Russian%20%a0%20Spanish--BR%20%a0%20ru%20%a0%20zh--CN-%2392403a)](https://github.com/FredrikLindgren/rr/releases)
@@ -28,7 +28,7 @@ Why some badges update slowly: https://github.com/pujux/badge-it/issues/78
 
 [<img alt="Download" src="https://raw.githubusercontent.com/Spellhold-Studios/Spellhold-Studios.github.io/main/assets/buttons/download.svg" height="28">](https://github.com/FredrikLindgren/rr/releases/latest)&nbsp;
 [<img alt="Readme" src="https://raw.githubusercontent.com/Spellhold-Studios/Spellhold-Studios.github.io/main/assets/buttons/readme.svg" height="28">](https://htmlpreview.github.io/?https://github.com/FredrikLindgren/rr/blob/master/rr/doc/readme_rr.html)&nbsp;
-[<img alt="Webpage" src="https://raw.githubusercontent.com/Spellhold-Studios/Spellhold-Studios.github.io/main/assets/buttons/webpage.svg" height="28">](https://spellhold-studios.github.io/)&nbsp;
+[<img alt="Webpage" src="https://raw.githubusercontent.com/Spellhold-Studios/Spellhold-Studios.github.io/main/assets/buttons/webpage.svg" height="28">](http://www.spellholdstudios.net/ie/rr)&nbsp;
 [<img alt="Discord" src="https://raw.githubusercontent.com/Spellhold-Studios/Spellhold-Studios.github.io/main/assets/buttons/discord-blue.svg" height="28">](https://discord.gg/pE2Njbdb2a)
 
 ## Introduction
@@ -60,11 +60,6 @@ The Rogue Rebalancing mod is a gameplay modification for Baldur's Gate 2: Throne
 **Author**  
 
 - Avenger
-
-**Contributors**  
-
-- jastey &nbsp;&ndash;&nbsp; maintenance (versions 9&ndash;10)
-- skellytz &nbsp;&ndash;&nbsp; maintenance (version 10.1)
 
 **Translators**  
 
